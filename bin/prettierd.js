@@ -29,5 +29,4 @@ const run = (fileName) => {
   });
 };
 
-const fileName = process.argv[2];
-run(fileName);
+run(process.argv[2]);
