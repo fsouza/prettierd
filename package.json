@@ -1,5 +1,5 @@
 {
-  "name": "prettierd",
+  "name": "@fsouza/prettierd",
   "version": "0.1.0",
   "description": "prettier, as a daemon",
   "main": "src/index.js",
@@ -24,5 +24,8 @@
     "core_d": "^2.0.0",
     "nanolru": "^1.0.0",
     "prettier": "^2.0.5"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
   }
 }
