@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/fsouza/prettierd#readme",
   "devDependencies": {
-    "jest": "^26.0.1"
+    "jest": "^26.1.0"
   },
   "dependencies": {
     "core_d": "^2.0.0",
