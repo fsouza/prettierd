@@ -4,7 +4,7 @@
   "description": "prettier, as a daemon",
   "bin": "bin/prettierd.js",
   "scripts": {
-    "run": "node src/index.js",
+    "run": "node bin/prettierd.js",
     "test": "jest"
   },
   "repository": {
@@ -21,17 +21,18 @@
     "jest": "^26.1.0"
   },
   "dependencies": {
+    "@typescript-eslint/typescript-estree": "^3.4.0",
     "core_d": "^2.0.0",
     "nanolru": "^1.0.0",
     "prettier": "^2.0.5"
   },
   "files": [
     "bin",
-		"lib",
+    "lib",
     "LICENSE",
     "README.md"
   ],
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
