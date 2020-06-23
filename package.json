@@ -24,6 +24,7 @@
     "@typescript-eslint/typescript-estree": "^3.4.0",
     "core_d": "^2.0.0",
     "nanolru": "^1.0.0",
+    "postcss-scss": "^2.1.1",
     "prettier": "^2.0.5"
   },
   "files": [
