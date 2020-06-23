@@ -1,8 +1,10 @@
+#!/usr/bin/env node
+
 const cmd = process.argv[2];
 
 process.env.CORE_D_TITLE = "prettierd";
 process.env.CORE_D_DOTFILE = ".prettierd";
-process.env.CORE_D_SERVICE = require.resolve("./service");
+process.env.CORE_D_SERVICE = require.resolve("../lib/service");
 
 const core_d = require("core_d");
 
