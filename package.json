@@ -2,6 +2,7 @@
   "name": "@fsouza/prettierd",
   "version": "0.1.0",
   "description": "prettier, as a daemon",
+  "bin": "src/index.js",
   "main": "src/index.js",
   "scripts": {
     "run": "node src/index.js",
@@ -25,6 +26,11 @@
     "nanolru": "^1.0.0",
     "prettier": "^2.0.5"
   },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
   "publishConfig": {
     "registry":"https://npm.pkg.github.com/"
   }
