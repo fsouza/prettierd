@@ -1,0 +1,26 @@
+{
+  "name": "prettierd",
+  "version": "0.1.0",
+  "description": "prettier, as a daemon",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fsouza/prettierd.git"
+  },
+  "author": "Francisco Souza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fsouza/prettierd/issues"
+  },
+  "homepage": "https://github.com/fsouza/prettierd#readme",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "core_d": "^2.0.0",
+    "prettier": "^2.0.5"
+  }
+}
