@@ -4,6 +4,7 @@
   "description": "prettier, as a daemon",
   "main": "src/index.js",
   "scripts": {
+    "run": "node src/index.js",
     "test": "jest"
   },
   "repository": {
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "core_d": "^2.0.0",
+    "nanolru": "^1.0.0",
     "prettier": "^2.0.5"
   }
 }
