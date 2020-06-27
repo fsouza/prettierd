@@ -30,7 +30,12 @@
     "prettier": "^2.0.5",
     "yaml": "^1.10.0"
   },
-  "files": ["bin", "lib", "LICENSE", "README.md"],
+  "files": [
+    "bin",
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   }
