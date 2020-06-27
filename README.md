@@ -21,8 +21,8 @@ $ cat file.ts | prettierd file.ts
 Following the instructions from https://github.com/mantoni/core_d.js#moar-speed:
 
 ```
-$ PORT=`cat ~/.core_d | cut -d" " -f1`
-$ TOKEN=`cat ~/.core_d | cut -d" " -f2`
+$ PORT=`cat ~/.prettierd | cut -d" " -f1`
+$ TOKEN=`cat ~/.prettierd | cut -d" " -f2`
 $ echo "$TOKEN $PWD file.ts" | cat - file.ts | nc localhost $PORT
 ```
 
