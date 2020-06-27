@@ -13,7 +13,7 @@ The prettierd script always takes the file in the standard input and the
 positional parameter with the name of the file:
 
 ```
-$ cat file.ts | prettier file.ts
+$ cat file.ts | prettierd file.ts
 ```
 
 ## Using with TCP (moar speed)
