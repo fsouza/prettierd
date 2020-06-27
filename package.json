@@ -5,7 +5,8 @@
   "bin": "bin/prettierd.js",
   "scripts": {
     "run": "node bin/prettierd.js",
-    "test": "jest"
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write ."
   },
   "repository": {
     "type": "git",
