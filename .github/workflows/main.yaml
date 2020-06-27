@@ -1,0 +1,30 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  bootstrap:
+    strategy:
+      matrix:
+        os:
+          - ubuntu
+          - macos
+
+    name: bootstrap
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+
+      - uses: actions/setup-node@v2.0.0
+        with:
+          node-version: "14.x"
+
+      - run: npm ci
+
+      - run: npm prettier:check
