@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
         if: github.event.ref_type == 'tag'
 
-      - run: npm run publish
+      - run: npm publish
         if: github.event.ref_type == 'tag'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
