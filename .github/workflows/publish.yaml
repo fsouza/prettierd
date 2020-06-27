@@ -11,9 +11,9 @@ jobs:
       - uses: actions/setup-node@v2.0.0
         if: github.event.ref_type == 'tag'
         with:
-          node-version: '14.x'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@fsouza'
+          node-version: "14.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@fsouza"
 
       - run: npm ci
         if: github.event.ref_type == 'tag'
