@@ -6,19 +6,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.1
-        if: github.event.ref_type == "tag"
+        if: github.event.ref_type == 'tag'
 
       - uses: actions/setup-node@v2.0.0
-        if: github.event.ref_type == "tag"
+        if: github.event.ref_type == 'tag'
         with:
-          node-version: "14.x"
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@fsouza"
+          node-version: '14.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@fsouza'
 
       - run: npm ci
-        if: github.event.ref_type == "tag"
+        if: github.event.ref_type == 'tag'
 
       - run: npm run publish
-        if: github.event.ref_type == "tag"
+        if: github.event.ref_type == 'tag'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
