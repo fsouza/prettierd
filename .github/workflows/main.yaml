@@ -27,4 +27,4 @@ jobs:
 
       - run: npm ci
 
-      - run: npm prettier:check
+      - run: npm run prettier:check
