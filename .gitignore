@@ -1,1 +1,4 @@
+*.tgz
+*.tsbuildinfo
+dist
 node_modules

@@ -4,7 +4,9 @@
   "description": "prettier, as a daemon",
   "bin": "bin/prettierd.js",
   "scripts": {
-    "run": "node bin/prettierd.js",
+    "prepare": "npm run build",
+    "build": "tsc -b",
+    "start": "node bin/prettierd.js start",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write ."
   },
@@ -19,7 +21,10 @@
   },
   "homepage": "https://github.com/fsouza/prettierd#readme",
   "devDependencies": {
-    "jest": "^26.1.0"
+    "@types/node": "^14.0.14",
+    "@types/prettier": "^2.0.1",
+    "jest": "^26.1.0",
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "@typescript-eslint/typescript-estree": "^3.4.0",
@@ -30,12 +35,7 @@
     "prettier": "^2.0.5",
     "yaml": "^1.10.0"
   },
-  "files": [
-    "bin",
-    "lib",
-    "LICENSE",
-    "README.md"
-  ],
+  "files": ["bin", "dist", "LICENSE", "README.md"],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   }
