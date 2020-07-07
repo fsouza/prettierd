@@ -22,7 +22,7 @@
   "homepage": "https://github.com/fsouza/prettierd#readme",
   "devDependencies": {
     "@types/node": "^14.0.14",
-    "@types/prettier": "^2.0.1",
+    "@types/prettier": "^2.0.2",
     "jest": "^26.1.0",
     "typescript": "^3.9.6"
   },
