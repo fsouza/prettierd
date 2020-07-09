@@ -28,5 +28,5 @@ $ echo "$TOKEN $PWD file.ts" | cat - file.ts | nc localhost $PORT
 
 ## Supported languages
 
-Checkout [lib/service.ts](/lib/service.ts) for a list of supported
+Checkout [src/service.ts](/src/service.ts) for a list of supported
 languages/extensions. Feel free to open a PR if you're missing something.
