@@ -24,7 +24,7 @@
     "@types/node": "^14.0.23",
     "@types/prettier": "^2.0.2",
     "jest": "^26.1.0",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "@typescript-eslint/typescript-estree": "^3.6.1",
