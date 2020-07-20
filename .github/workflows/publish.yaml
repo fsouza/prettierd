@@ -12,7 +12,7 @@ jobs:
         if: github.event.ref_type == 'tag'
         with:
           node-version: "14.x"
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: "https://registry.npmjs.org"
           scope: "@fsouza"
 
       - run: npm ci
