@@ -20,6 +20,10 @@ const getParserName = (ext: string): BuiltInParserName => {
     case ".yml":
     case ".yaml":
       return "yaml";
+    case ".md":
+    case ".markdown":
+    case ".mkd":
+      return "markdown";
     default:
       return "babel";
   }
