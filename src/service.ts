@@ -39,7 +39,10 @@ const withParser = (options: Options | null, filePath: string): Options => {
 const resolveConfig = (cwd: string, filePath: string): Options => {
   let v = configCache.get<string, Options>(cwd);
   if (!v) {
-    v = prettier.resolveConfig.sync(filePath);
+    v = prettier.resolveConfig.sync(filePath, {
+      editorconfig: true,
+      useCache: false,
+    });
     if (v) {
       configCache.set(cwd, v);
     }
