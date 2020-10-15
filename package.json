@@ -33,7 +33,7 @@
     "nanolru": "^1.0.0",
     "postcss-scss": "^3.0.0",
     "prettier": "^2.0.5",
-    "remark-parse": "^8.0.3",
+    "remark-parse": "^9.0.0",
     "yaml": "^1.10.0"
   },
   "files": [
