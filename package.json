@@ -1,6 +1,6 @@
 {
   "name": "@fsouza/prettierd",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "prettier, as a daemon",
   "bin": "bin/prettierd.js",
   "scripts": {
