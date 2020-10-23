@@ -1,3 +1,5 @@
+process.env.FORCE_COLOR = "0";
+
 import LRU from "nanolru";
 import path from "path";
 import prettier from "prettier";
