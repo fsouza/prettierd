@@ -21,18 +21,18 @@
   },
   "homepage": "https://github.com/fsouza/prettierd#readme",
   "devDependencies": {
-    "@types/node": "^14.0.23",
-    "@types/prettier": "^2.0.2",
-    "jest": "^26.1.0",
-    "typescript": "^4.0.2"
+    "@types/node": "^14.14.10",
+    "@types/prettier": "^2.1.5",
+    "jest": "^26.6.3",
+    "typescript": "^4.1.2"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "^4.0.1",
+    "@typescript-eslint/typescript-estree": "^4.9.0",
     "angular-html-parser": "^1.7.1",
     "core_d": "^2.0.0",
     "nanolru": "^1.0.0",
     "postcss-scss": "^3.0.0",
-    "prettier": "^2.0.5",
+    "prettier": "^2.2.1",
     "remark-parse": "^9.0.0",
     "yaml": "^1.10.0"
   },
