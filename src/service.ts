@@ -31,17 +31,17 @@ const getParserName = (ext: string): BuiltInParserName => {
   }
 };
 
-const withParser = (options: Options | null, filePath: string): Options => {
+function withParser(options: Options | null, filePath: string): Options {
   return {
     ...options,
     parser: getParserName(path.extname(filePath)),
   };
-};
+}
 
-const resolveConfig = (cwd: string, filePath: string): Options => {
+async function resolveConfig(cwd: string, filePath: string): Promise<Options> {
   let v = configCache.get<string, Options>(cwd);
   if (!v) {
-    v = prettier.resolveConfig.sync(filePath, {
+    v = await prettier.resolveConfig(filePath, {
       editorconfig: true,
       useCache: false,
     });
@@ -50,14 +50,21 @@ const resolveConfig = (cwd: string, filePath: string): Options => {
     }
   }
   return withParser(v, filePath);
-};
+}
 
-const resolveFile = (cwd: string, fileName: string): [string, string] => {
+function resolveFile(cwd: string, fileName: string): [string, string] {
   if (path.isAbsolute(fileName)) {
     return [fileName, fileName];
   }
   return [cwd, path.join(cwd, fileName)];
-};
+}
+
+async function run(cwd: string, args: string[], text: string): Promise<string> {
+  const fileName = args[0];
+  const [cacheKey, fullPath] = resolveFile(cwd, fileName);
+  const options = await resolveConfig(cacheKey, fullPath);
+  return format(text, options);
+}
 
 export function invoke(
   cwd: string,
@@ -66,8 +73,5 @@ export function invoke(
   _mtime: number,
   cb: (_err?: string, _resp?: string) => void
 ): void {
-  const fileName = args[0];
-  const [cacheKey, fullPath] = resolveFile(cwd, fileName);
-  const options = resolveConfig(cacheKey, fullPath);
-  cb(undefined, format(text, options));
+  run(cwd, args, text).then((resp) => void cb(undefined, resp));
 }
