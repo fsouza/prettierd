@@ -63,10 +63,11 @@ export function invoke(
   cwd: string,
   args: string[],
   text: string,
-  _mtime: number
-): string {
+  _mtime: number,
+  cb: (_err?: string, _resp?: string) => void
+): void {
   const fileName = args[0];
   const [cacheKey, fullPath] = resolveFile(cwd, fileName);
   const options = resolveConfig(cacheKey, fullPath);
-  return format(text, options);
+  cb(undefined, format(text, options));
 }
