@@ -1,8 +1,10 @@
 {
   "name": "@fsouza/prettierd",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "prettier, as a daemon",
-  "bin": "bin/prettierd.js",
+  "bin": {
+    "prettierd": "bin/prettierd.js"
+  },
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc -b",
