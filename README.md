@@ -51,7 +51,7 @@ Alternatively, one can use
 [prettierme](https://github.com/ruyadorno/prettierme) to integrate directly
 with other editors.
 
-If you're using a Vim/Neovim plugin such as
+Or, as a third option for users of Vim/Neovim plugins such as
 [formatter.nvim](https://github.com/mhartington/formatter.nvim) or
 [vim-codefmt](https://github.com/google/vim-codefmt), you can configure
 prettierd in the stdin mode. Below is an example with `formatter.nvim`:
