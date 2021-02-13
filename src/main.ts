@@ -1,6 +1,6 @@
 import core_d from "core_d";
 
-export function main(cmd: string, fileName: string): void {
+export function main(cmd: string): void {
   if (
     cmd === "start" ||
     cmd === "stop" ||
@@ -11,6 +11,7 @@ export function main(cmd: string, fileName: string): void {
     return;
   }
 
+  const fileName = cmd;
   let text = "";
   process.stdin.setEncoding("utf-8");
   process.stdin.on("data", (chunk) => {
