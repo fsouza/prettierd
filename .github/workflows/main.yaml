@@ -25,10 +25,10 @@ jobs:
         with:
           node-version: "14.x"
 
-      - run: npm ci
+      - run: yarn install --frozen-lockfile
 
-      - run: npm run prettier:check
+      - run: yarn prettier:check
 
-      - run: npm run build
+      - run: yarn build
 
-      - run: npm run start
+      - run: yarn start

@@ -6,7 +6,7 @@
     "prettierd": "bin/prettierd.js"
   },
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "yarn build",
     "build": "tsc -b",
     "start": "node bin/prettierd.js start",
     "prettier:check": "prettier --check .",
