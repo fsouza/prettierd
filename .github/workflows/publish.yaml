@@ -15,10 +15,10 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@fsouza"
 
-      - run: npm ci
+      - run: yarn install --frozen-lockfile
         if: github.event.ref_type == 'tag'
 
-      - run: npm publish --access public
+      - run: yarn publish --access public
         if: github.event.ref_type == 'tag'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
