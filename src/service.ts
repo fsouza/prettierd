@@ -10,7 +10,7 @@ const configCache = new LRU({ max: 20, maxAge: 60000 });
 function withParser(options: Options | null, filepath: string): Options {
   return {
     ...options,
-    filepath
+    filepath,
   };
 }
 
