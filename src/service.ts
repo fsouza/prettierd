@@ -7,17 +7,10 @@ import { Options, format } from "prettier";
 
 const configCache = new LRU({ max: 20, maxAge: 60000 });
 
-function withParser(options: Options | null, filepath: string): Options {
-  return {
-    ...options,
-    filepath,
-  };
-}
-
-async function resolveConfig(cwd: string, filePath: string): Promise<Options> {
+async function resolveConfig(cwd: string, filepath: string): Promise<Options> {
   let v = configCache.get<string, Options>(cwd);
   if (!v) {
-    v = await prettier.resolveConfig(filePath, {
+    v = await prettier.resolveConfig(filepath, {
       editorconfig: true,
       useCache: false,
     });
@@ -25,7 +18,10 @@ async function resolveConfig(cwd: string, filePath: string): Promise<Options> {
       configCache.set(cwd, v);
     }
   }
-  return withParser(v, filePath);
+  return {
+    ...v,
+    filepath,
+  };
 }
 
 function resolveFile(cwd: string, fileName: string): [string, string] {
