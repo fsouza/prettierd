@@ -32,7 +32,7 @@ function resolveFile(cwd: string, fileName: string): [string, string] {
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const fileName = args[0];
+  const fileName = args[0] === "--no-color" ? args[1] : args[0];
   const [cacheKey, fullPath] = resolveFile(cwd, fileName);
   const options = await resolveConfig(cacheKey, fullPath);
   return format(text, options);
