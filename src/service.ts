@@ -45,5 +45,7 @@ export function invoke(
   _mtime: number,
   cb: (_err?: string, _resp?: string) => void
 ): void {
-  run(cwd, args, text).then((resp) => void cb(undefined, resp));
+  run(cwd, args, text)
+    .then((resp) => void cb(undefined, resp))
+    .catch((error) => void cb(error));
 }
