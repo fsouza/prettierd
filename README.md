@@ -43,9 +43,13 @@ languages/extensions. Feel free to open a PR if you're missing something.
 
 ## Editor integration
 
-I use this directly with neovim's TCP client, see more details in this [blog
+I use this directly with neovim's LSP client, via
+[efm-langserver](https://github.com/mattn/efm-langserver).
+
+The native TCP client can be used too, I used to do it migrated to
+efm-langserver for simplicity, see more details in this [blog
 post](https://blog.fsouza.dev/prettierd-neovim-format-on-save/) or my
-[configuration](https://github.com/fsouza/dotfiles/blob/HEAD/nvim/lua/fsouza/plugin/prettierd.lua).
+[configuration](https://github.com/fsouza/dotfiles/blob/2ad8a83bf40a3bc43931cd71b53b171a109f76bc/nvim/lua/fsouza/plugin/prettierd.lua).
 
 Alternatively, one can use
 [prettierme](https://github.com/ruyadorno/prettierme) to integrate directly
@@ -74,3 +78,6 @@ require('formatter').setup({
   }
 })
 ```
+
+I don't know much about other editors, but feel free to send a pull requests on
+instructions.
