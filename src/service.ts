@@ -23,7 +23,7 @@ async function resolveConfig(
       console.log(process.env.PRETTIERD_DEFAULT_CONFIG)
       v = await prettier.resolveConfig(null, {
         config: process.env.PRETTIERD_DEFAULT_CONFIG,
-        editorconfig: true,
+        editorconfig: false,
         useCache: false,
       });
     }
