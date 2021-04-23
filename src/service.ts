@@ -20,8 +20,7 @@ async function resolveConfig(
       useCache: false,
     });
 
-    if (!v && typeof process.env.PRETTIERD_DEFAULT_CONFIG === "string") {
-      console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
+    if (!v && process.env.PRETTIERD_DEFAULT_CONFIG) {
       v = await prettier.resolveConfig(
         dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
         {
