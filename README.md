@@ -52,7 +52,7 @@ If you have locally installed `prettier` in your package, it will use that. Else
 ## Editor integration
 
 I use this directly with neovim's LSP client, via
-[efm-langserver](https://github.com/mattn/efm-langserver).
+[efm-langserver](https://github.com/mattn/efm-langserver):
 
 ```lua
 local prettier = {

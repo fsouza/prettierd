@@ -1,17 +1,18 @@
 process.env.FORCE_COLOR = "0";
 
 import LRU from "nanolru";
+import { dirname } from "node:path";
 import path from "path";
-import type { Options } from "prettier";
+import type Prettier from "prettier";
 
 const configCache = new LRU({ max: 20, maxAge: 60000 });
 
 async function resolveConfig(
-  prettier: any,
+  prettier: typeof Prettier,
   cwd: string,
   filepath: string
-): Promise<Options> {
-  let v = configCache.get<string, Options>(cwd);
+): Promise<Prettier.Options> {
+  let v = configCache.get<string, Prettier.Options>(cwd);
 
   if (!v) {
     v = await prettier.resolveConfig(filepath, {
@@ -20,12 +21,15 @@ async function resolveConfig(
     });
 
     if (!v && typeof process.env.PRETTIERD_DEFAULT_CONFIG === "string") {
-      console.log(process.env.PRETTIERD_DEFAULT_CONFIG)
-      v = await prettier.resolveConfig(null, {
-        config: process.env.PRETTIERD_DEFAULT_CONFIG,
-        editorconfig: true,
-        useCache: false,
-      });
+      console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
+      v = await prettier.resolveConfig(
+        dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
+        {
+          config: process.env.PRETTIERD_DEFAULT_CONFIG,
+          editorconfig: true,
+          useCache: false,
+        }
+      );
     }
 
     if (v) {
@@ -39,7 +43,7 @@ async function resolveConfig(
   };
 }
 
-function resolvePrettier(cwd: string): Promise<any> {
+function resolvePrettier(cwd: string): Promise<typeof Prettier> {
   try {
     return import(require.resolve("prettier", { paths: [cwd] }));
   } catch {
