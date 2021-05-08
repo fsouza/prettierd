@@ -44,11 +44,9 @@ async function resolveConfig(
 }
 
 async function resolvePrettier(cwd: string): Promise<typeof Prettier> {
-  try {
-    return import(require.resolve("prettier", { paths: [cwd] }));
-  } catch {
-    return import("prettier");
-  }
+  return import(require.resolve("prettier", { paths: [cwd] })).catch(
+    () => import("prettier")
+  );
 }
 
 function resolveFile(cwd: string, fileName: string): [string, string] {
