@@ -8,6 +8,8 @@
 - [Using in the command line with node.js](#using-in-the-command-line-with-nodejs)
 - [Using with TCP (moar speed)](#using-with-tcp-moar-speed)
 - [Supported languages](#supported-languages)
+- [Provide Default Configuration](#provide-default-configuration)
+- [Local Instance](#local-instance)
 - [Editor integration](#editor-integration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
