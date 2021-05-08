@@ -41,10 +41,25 @@ $ echo "$TOKEN $PWD file.ts" | cat - file.ts | nc localhost $PORT
 Checkout [src/service.ts](/src/service.ts) for a list of supported
 languages/extensions. Feel free to open a PR if you're missing something.
 
+## Provide Default Configuration
+
+You can provide a default configuration for the prettier via setting the environment variable `PRETTIERD_DEFAULT_CONFIG` to the exact path of the `prettier` configuration file.
+
+## Local Instance
+
+If you have locally installed `prettier` in your package, it will use that. Elsewise it will use the one bundled with the package itself.
+
 ## Editor integration
 
 I use this directly with neovim's LSP client, via
-[efm-langserver](https://github.com/mattn/efm-langserver).
+[efm-langserver](https://github.com/mattn/efm-langserver):
+
+```lua
+local prettier = {
+  formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/.config/nvim/utils/linter-config/.prettierrc.json ' .. 'prettierd ${INPUT}',
+  formatStdin = true
+}
+```
 
 The native TCP client can be used too, I used to do it migrated to
 efm-langserver for simplicity, see more details in this [blog
