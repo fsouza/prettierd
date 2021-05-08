@@ -1,7 +1,7 @@
 process.env.FORCE_COLOR = "0";
 
 import LRU from "nanolru";
-import { dirname } from "node:path";
+import { dirname } from "path";
 import path from "path";
 import type Prettier from "prettier";
 
@@ -44,15 +44,11 @@ async function resolveConfig(
 }
 
 async function resolvePrettier(cwd: string): Promise<typeof Prettier> {
-  let prettier: typeof Prettier;
-
   try {
-    prettier = await import(require.resolve("prettier", { paths: [cwd] }));
+    return import(require.resolve("prettier", { paths: [cwd] }));
   } catch {
-    prettier = await import("prettier");
+    return import("prettier");
   }
-
-  return prettier;
 }
 
 function resolveFile(cwd: string, fileName: string): [string, string] {
