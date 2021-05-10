@@ -1,5 +1,9 @@
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
+import { promisify } from "util";
+
+const mkdir = promisify(fs.mkdir);
+const readFile = promisify(fs.readFile);
 
 async function getDotfile(title: string): Promise<string> {
   if (process.env.CORE_D_DOTFILE) {
@@ -8,7 +12,7 @@ async function getDotfile(title: string): Promise<string> {
 
   if (process.env.HOME && process.env.XDG_CONFIG_HOME) {
     const confDir = path.join(process.env.XDG_CONFIG_HOME, title);
-    await fs.mkdir(confDir, { recursive: true });
+    await mkdir(confDir, { recursive: true });
 
     const confPath = path.join(confDir, title);
     return path.relative(process.env.HOME, confPath);
@@ -17,7 +21,7 @@ async function getDotfile(title: string): Promise<string> {
   return ".prettierd";
 }
 
-async function main(cmd: string): Promise<void> {
+async function main(cmdOrFilename: string): Promise<void> {
   const title = "prettierd";
 
   process.env.CORE_D_TITLE = title;
@@ -27,24 +31,19 @@ async function main(cmd: string): Promise<void> {
   const core_d = require("core_d");
 
   if (
-    cmd === "start" ||
-    cmd === "stop" ||
-    cmd === "restart" ||
-    cmd === "status"
+    cmdOrFilename === "start" ||
+    cmdOrFilename === "stop" ||
+    cmdOrFilename === "restart" ||
+    cmdOrFilename === "status"
   ) {
-    core_d[cmd]();
+    core_d[cmdOrFilename]();
     return;
   }
 
-  const fileName = cmd;
-  let text = "";
-  process.stdin.setEncoding("utf-8");
-  process.stdin.on("data", (chunk) => {
-    text += chunk;
-  });
-  process.stdin.on("end", () => {
-    core_d.invoke([fileName], text);
-  });
+  core_d.invoke(
+    [cmdOrFilename],
+    await readFile(process.stdin.fd, { encoding: "utf-8" })
+  );
 }
 
 main(process.argv[2]).catch((err) => {
