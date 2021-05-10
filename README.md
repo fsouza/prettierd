@@ -7,7 +7,7 @@
 
 - [Using in the command line with node.js](#using-in-the-command-line-with-nodejs)
 - [Using with TCP (moar speed)](#using-with-tcp-moar-speed)
-- [Supported languages](#supported-languages)
+- [Supported languages / plugins](#supported-languages--plugins)
 - [Provide Default Configuration](#provide-default-configuration)
 - [Local Instance](#local-instance)
 - [Editor integration](#editor-integration)
@@ -38,10 +38,14 @@ $ TOKEN=`cat ~/.prettierd | cut -d" " -f2`
 $ echo "$TOKEN $PWD file.ts" | cat - file.ts | nc localhost $PORT
 ```
 
-## Supported languages
+## Supported languages / plugins
 
-Checkout [src/service.ts](/src/service.ts) for a list of supported
-languages/extensions. Feel free to open a PR if you're missing something.
+Many parsers ship with prettierd, including JavaScript, TypeScript, GraphQL,
+CSS, HTML and YAML.
+Please notice that starting with version 0.12.0, prettierd now supports
+invoking the local version of prettier, so instead of adding new languages to
+prettierd, you should rely on that feature to use it locally with your custom
+version of prettier and enabled plugins.
 
 ## Provide Default Configuration
 
