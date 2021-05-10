@@ -1142,9 +1142,9 @@ core-util-is@1.0.2:
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
 core_d@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/core_d/-/core_d-3.0.0.tgz#ed2b5f074aa891041ce207e425f6ceacd16cfb48"
-  integrity sha512-6DM/spZ6j+Yha93TMdK+uz/ws82eDcYefPv2dKZBlMT5mFoJNG+zNPaqSpb5xFvrZh90KFXdSuau1Z+Jql2Tsg==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/core_d/-/core_d-3.1.0.tgz#c3d54d841fa553cd7a90c833e83ef1dbdaa8b068"
+  integrity sha512-lYd/ZmUU4pciyaNOLk5jaJx9BqpmBFdtjx0EB0c4YYQsrTfdrrzjlDFGmH7oq9OdYwTEbrhOGghlbmDOx1Vrpg==
   dependencies:
     supports-color "^8.1.0"
 
