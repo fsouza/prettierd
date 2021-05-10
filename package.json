@@ -3,12 +3,12 @@
   "version": "0.12.0",
   "description": "prettier, as a daemon",
   "bin": {
-    "prettierd": "bin/prettierd.js"
+    "prettierd": "dist/prettierd.js"
   },
   "scripts": {
     "prepare": "yarn build",
     "build": "tsc -b",
-    "start": "node bin/prettierd.js start",
+    "start": "node dist/prettierd.js start",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write ."
   },
