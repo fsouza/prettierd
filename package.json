@@ -3,7 +3,7 @@
   "version": "0.12.2",
   "description": "prettier, as a daemon",
   "bin": {
-    "prettierd": "dist/prettierd.js"
+    "prettierd": "./bin/prettierd"
   },
   "scripts": {
     "prepare": "yarn build",
