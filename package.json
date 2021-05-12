@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "yarn build",
     "build": "tsc -b",
-    "start": "node dist/prettierd.js start",
+    "start": "bin/prettierd start",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write ."
   },
