@@ -5,7 +5,11 @@ import { dirname } from "path";
 import path from "path";
 import type Prettier from "prettier";
 
-const configCache = new LRU({ max: 20, maxAge: 60000 });
+const cacheParams = { max: 20, maxAge: 60000 };
+
+const configCache = new LRU(cacheParams);
+
+const importCache = new LRU(cacheParams);
 
 async function resolveConfig(
   prettier: typeof Prettier,
@@ -44,9 +48,17 @@ async function resolveConfig(
 }
 
 async function resolvePrettier(cwd: string): Promise<typeof Prettier> {
-  return import(require.resolve("prettier", { paths: [cwd] })).catch(
-    () => import("prettier")
-  );
+  const cached = importCache.get<string, typeof Prettier>(cwd);
+  if (cached) {
+    return cached;
+  }
+
+  return import(require.resolve("prettier", { paths: [cwd] }))
+    .catch(() => import("prettier"))
+    .then((v) => {
+      importCache.set(cwd, v);
+      return v;
+    });
 }
 
 function resolveFile(cwd: string, fileName: string): [string, string] {
