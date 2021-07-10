@@ -62,7 +62,7 @@ I use this directly with neovim's LSP client, via
 
 ```lua
 local prettier = {
-  formatCommand = 'prettierd ${INPUT}',
+  formatCommand = 'prettierd "${INPUT}"',
   formatStdin = true,
   env = {
     string.format('PRETTIERD_DEFAULT_CONFIG=%s', vim.fn.expand('~/.config/nvim/utils/linter-config/.prettierrc.json')),
