@@ -1,32 +1,14 @@
 import fs from "fs";
-import path from "path";
 import { promisify } from "util";
 
-const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
-
-async function getDotfile(title: string): Promise<string> {
-  if (process.env.CORE_D_DOTFILE) {
-    return process.env.CORE_D_DOTFILE;
-  }
-
-  if (process.env.HOME && process.env.XDG_CONFIG_HOME) {
-    const confDir = path.join(process.env.XDG_CONFIG_HOME, title);
-    await mkdir(confDir, { recursive: true });
-
-    const confPath = path.join(confDir, title);
-    return path.relative(process.env.HOME, confPath);
-  }
-
-  return ".prettierd";
-}
 
 async function main(cmdOrFilename: string): Promise<void> {
   const title = "prettierd";
 
   process.env.CORE_D_TITLE = title;
   process.env.CORE_D_SERVICE = require.resolve("./service");
-  process.env.CORE_D_DOTFILE = await getDotfile(title);
+  process.env.CORE_D_DOTFILE = `.${title}`;
 
   const core_d = require("core_d");
 
