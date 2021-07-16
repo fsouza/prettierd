@@ -1,8 +1,6 @@
 import fs from "fs";
-import path from "path";
 import { promisify } from "util";
 
-const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
 
 async function main(cmdOrFilename: string): Promise<void> {
