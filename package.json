@@ -1,6 +1,6 @@
 {
   "name": "@fsouza/prettierd",
-  "version": "0.14.3",
+  "version": "0.15.0",
   "description": "prettier, as a daemon",
   "bin": {
     "prettierd": "./bin/prettierd"
