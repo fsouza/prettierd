@@ -1,9 +1,28 @@
 import fs from "fs";
 import { promisify } from "util";
 
+// @ts-ignore
+const { version } = require("../package.json");
+
 const readFile = promisify(fs.readFile);
 
-async function main(cmdOrFilename: string): Promise<void> {
+type Action = "PRINT_VERSION" | "INVOKE_CORE_D";
+
+function processArgs(args: string[]): [Action, string] {
+  if (args.find((arg) => arg === "--version")) {
+    return ["PRINT_VERSION", ""];
+  }
+  return ["INVOKE_CORE_D", args[0]];
+}
+
+async function main(args: string[]): Promise<void> {
+  const [action, cmdOrFilename] = processArgs(args);
+
+  if (action === "PRINT_VERSION") {
+    console.log(`prettierd ${version}`);
+    return;
+  }
+
   const title = "prettierd";
 
   process.env.CORE_D_TITLE = title;
@@ -28,7 +47,7 @@ async function main(cmdOrFilename: string): Promise<void> {
   );
 }
 
-main(process.argv[2]).catch((err) => {
+main(process.argv.slice(2)).catch((err) => {
   console.error(err);
   process.exit(1);
 });
