@@ -8,6 +8,7 @@
 - [Using in the command line with node.js](#using-in-the-command-line-with-nodejs)
 - [Using with TCP (moar speed)](#using-with-tcp-moar-speed)
 - [Supported languages / plugins](#supported-languages--plugins)
+- [Additional plugins](#additional-plugins)
 - [Provide Default Configuration](#provide-default-configuration)
 - [Local Instance](#local-instance)
 - [Editor integration](#editor-integration)
@@ -46,6 +47,22 @@ Please notice that starting with version 0.12.0, prettierd now supports
 invoking the local version of prettier, so instead of adding new languages to
 prettierd, you should rely on that feature to use it locally with your custom
 version of prettier and enabled plugins.
+
+## Additional plugins
+
+Additional plugins can be supported by installing them and adding them to the
+prettier configuration. For example, to use the Ruby plugin, install
+[`@prettier/plugin-ruby`](https://www.npmjs.com/package/@prettier/plugin-ruby)
+and add it to your configuration:
+
+```json
+{
+  ... other settings
+  "plugins": ["@prettier/plugin-ruby"]
+}
+```
+
+Then formatting Ruby files should be possible.
 
 ## Provide Default Configuration
 
