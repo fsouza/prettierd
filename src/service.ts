@@ -107,10 +107,7 @@ async function resolveConfig(
     caches.configCache.set(filepath, config);
   }
 
-  return {
-    ...config,
-    filepath,
-  };
+  return config ?? { filepath };
 }
 
 async function resolvePrettier(cwd: string): Promise<typeof Prettier> {
