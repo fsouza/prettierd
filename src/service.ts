@@ -9,7 +9,7 @@ import fs from "fs";
 
 const stat = promisify(fs.stat);
 
-const cacheParams = { max: 20, maxAge: 60000 };
+const cacheParams = { max: 500, maxAge: 60000 };
 
 const caches = {
   configCache: new LRU(cacheParams),
@@ -74,17 +74,10 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
   return result;
 }
 
-async function resolveConfig(
+async function resolveConfigNoCache(
   prettier: typeof Prettier,
   filepath: string
 ): Promise<Prettier.Options> {
-  const cachedValue = caches.configCache.get<string, Prettier.Options>(
-    filepath
-  );
-  if (cachedValue) {
-    return cachedValue;
-  }
-
   let config = await prettier.resolveConfig(filepath, {
     editorconfig: true,
     useCache: false,
@@ -102,24 +95,35 @@ async function resolveConfig(
     );
   }
 
-  if (config) {
-    config.filepath = filepath;
-    caches.configCache.set(filepath, config);
-  }
-
-  return config ?? { filepath };
+  return { ...config, filepath };
 }
 
-async function resolvePrettier(cwd: string): Promise<typeof Prettier> {
-  const cached = caches.importCache.get<string, typeof Prettier>(cwd);
+async function resolveConfig(
+  prettier: typeof Prettier,
+  filepath: string
+): Promise<Prettier.Options> {
+  const cachedValue = caches.configCache.get<string, Prettier.Options>(
+    filepath
+  );
+  if (cachedValue) {
+    return cachedValue;
+  }
+
+  const config = await resolveConfigNoCache(prettier, filepath);
+  caches.configCache.set(filepath, config);
+  return config;
+}
+
+async function resolvePrettier(dir: string): Promise<typeof Prettier> {
+  const cached = caches.importCache.get<string, typeof Prettier>(dir);
   if (cached) {
     return cached;
   }
 
-  return import(require.resolve("prettier", { paths: [cwd] }))
+  return import(require.resolve("prettier", { paths: [dir] }))
     .catch(() => import("prettier"))
     .then((v) => {
-      caches.importCache.set(cwd, v);
+      caches.importCache.set(dir, v);
       return v;
     });
 }
@@ -135,7 +139,7 @@ function resolveFile(cwd: string, fileName: string): [string, string] {
 async function run(cwd: string, args: string[], text: string): Promise<string> {
   const fileName = args[0] === "--no-color" ? args[1] : args[0];
   const [, fullPath] = resolveFile(cwd, fileName);
-  const prettier = await resolvePrettier(cwd);
+  const prettier = await resolvePrettier(path.dirname(fullPath));
   const options = await resolveConfig(prettier, fullPath);
 
   return prettier.format(text, {
