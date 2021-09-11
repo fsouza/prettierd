@@ -114,16 +114,27 @@ async function resolveConfig(
   return config;
 }
 
-async function resolvePrettier(dir: string): Promise<typeof Prettier> {
-  const cached = caches.importCache.get<string, typeof Prettier>(dir);
+async function resolvePrettier(
+  dir: string
+): Promise<typeof Prettier | undefined> {
+  const cached = caches.importCache.get<string, typeof Prettier | false>(dir);
   if (cached) {
     return cached;
   }
 
+  if (cached === false) {
+    return undefined;
+  }
+
   return import(require.resolve("prettier", { paths: [dir] }))
-    .catch(() => import("prettier"))
+    .catch(() => {
+      if (process.env.PRETTIERD_DISABLE_BUNDLED_PRETTIER) {
+        return undefined;
+      }
+      return import("prettier");
+    })
     .then((v) => {
-      caches.importCache.set(dir, v);
+      caches.importCache.set(dir, v ?? false);
       return v;
     });
 }
@@ -140,6 +151,9 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
   const fileName = args[0] === "--no-color" ? args[1] : args[0];
   const [, fullPath] = resolveFile(cwd, fileName);
   const prettier = await resolvePrettier(path.dirname(fullPath));
+  if (!prettier) {
+    return text;
+  }
   const options = await resolveConfig(prettier, fullPath);
 
   return prettier.format(text, {
