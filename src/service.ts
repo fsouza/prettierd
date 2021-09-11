@@ -76,36 +76,39 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
 
 async function resolveConfig(
   prettier: typeof Prettier,
-  cwd: string,
   filepath: string
 ): Promise<Prettier.Options> {
-  let v = caches.configCache.get<string, Prettier.Options>(cwd);
+  const cachedValue = caches.configCache.get<string, Prettier.Options>(
+    filepath
+  );
+  if (cachedValue) {
+    return cachedValue;
+  }
 
-  if (!v) {
-    v = await prettier.resolveConfig(filepath, {
-      editorconfig: true,
-      useCache: false,
-    });
+  let config = await prettier.resolveConfig(filepath, {
+    editorconfig: true,
+    useCache: false,
+  });
 
-    if (!v && process.env.PRETTIERD_DEFAULT_CONFIG) {
-      console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
-      v = await prettier.resolveConfig(
-        dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
-        {
-          config: process.env.PRETTIERD_DEFAULT_CONFIG,
-          editorconfig: true,
-          useCache: false,
-        }
-      );
-    }
+  if (!config && process.env.PRETTIERD_DEFAULT_CONFIG) {
+    console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
+    config = await prettier.resolveConfig(
+      dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
+      {
+        config: process.env.PRETTIERD_DEFAULT_CONFIG,
+        editorconfig: true,
+        useCache: false,
+      }
+    );
+  }
 
-    if (v) {
-      caches.configCache.set(cwd, v);
-    }
+  if (config) {
+    config.filepath = filepath;
+    caches.configCache.set(filepath, config);
   }
 
   return {
-    ...v,
+    ...config,
     filepath,
   };
 }
@@ -134,9 +137,9 @@ function resolveFile(cwd: string, fileName: string): [string, string] {
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
   const fileName = args[0] === "--no-color" ? args[1] : args[0];
-  const [cacheKey, fullPath] = resolveFile(cwd, fileName);
+  const [, fullPath] = resolveFile(cwd, fileName);
   const prettier = await resolvePrettier(cwd);
-  const options = await resolveConfig(prettier, cacheKey, fullPath);
+  const options = await resolveConfig(prettier, fullPath);
 
   return prettier.format(text, {
     ...options,
