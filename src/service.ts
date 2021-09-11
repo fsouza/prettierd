@@ -128,7 +128,7 @@ async function resolvePrettier(
 
   return import(require.resolve("prettier", { paths: [dir] }))
     .catch(() => {
-      if (process.env.PRETTIERD_DISABLE_BUNDLED_PRETTIER) {
+      if (process.env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
         return undefined;
       }
       return import("prettier");
