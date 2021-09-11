@@ -7,7 +7,7 @@
 ### Added
 
 - Better support for plugins! `prettierd` will now set the proper parameters
-so prettier can find plugins installed locally/globally
+  so prettier can find plugins installed locally/globally
 
 ### Updated dependencies
 
@@ -24,7 +24,7 @@ so prettier can find plugins installed locally/globally
 ### Added
 
 - Support `--version`, which prints the version of prettierd, but also makes
-it usable with ale.vim.
+  it usable with ale.vim.
 
 ### Internal
 
@@ -62,7 +62,7 @@ it usable with ale.vim.
 ### Added
 
 - cache the results of `resolvePrettier`, a function that's always called to
-find the correct prettier for a given file (local vs global)
+  find the correct prettier for a given file (local vs global)
 
 ## v0.13.0
 
@@ -75,7 +75,7 @@ find the correct prettier for a given file (local vs global)
 ### Removed
 
 - Removed custom parsers (HTML, GraphQL, CSS, SASS and TypeScript): users can
-install them locally if desired
+  install them locally if desired
 
 ### Updated dependencies
 
@@ -136,10 +136,10 @@ install them locally if desired
 ### Added
 
 - Support for a global configuration file via the environment variable
-`PRETTIERD_DEFAULT_CONFIG` (thanks @cenk1cenk2)
+  `PRETTIERD_DEFAULT_CONFIG` (thanks @cenk1cenk2)
 - Support for local installations of prettier: prettierd will now prefer a
-local installation of prettier when formatting file. This can also be used to
-load additional parsers and plugins (thanks @cenk1cenk2)
+  local installation of prettier when formatting file. This can also be used to
+  load additional parsers and plugins (thanks @cenk1cenk2)
 
 ## v0.10.1
 
@@ -156,14 +156,14 @@ load additional parsers and plugins (thanks @cenk1cenk2)
 ### Added
 
 - prettierd now lets prettier figure out the parser, making it possible to
-format file formats unknown to prettierd, as long as prettier can find the
-required plugins (thanks @williamboman)
+  format file formats unknown to prettierd, as long as prettier can find the
+  required plugins (thanks @williamboman)
 - ship with support for graphql
 
 ### Fixed
 
 - fix getting filename from args: core_d always prepends --no-colors to the
-arg list (thanks @williamboman)
+  arg list (thanks @williamboman)
 
 ### Updated dependencies
 
@@ -188,9 +188,8 @@ arg list (thanks @williamboman)
 
 ### Fixed
 
-- Fix handling of stdin, allowing prettierd to be used as `prettierd
-<filename>`. Before this change, users could only use `prettierd` via the TCP
-socket.
+- Fix handling of stdin, allowing prettierd to be used as `prettierd <filename>`. Before this change, users could only use `prettierd` via the TCP
+  socket.
 
 ## v0.9.1
 
@@ -208,7 +207,7 @@ socket.
 ### Added
 
 - prettierd is now async and can handle requests from multiple editors/clients
-more nicely.
+  more nicely.
 
 ### Updated dependencies
 
@@ -255,7 +254,7 @@ more nicely.
 ### Fixed
 
 - Forcibly disable colored output: prettierd is designed for being used in
-editors where errors in colored aren't that useful.
+  editors where errors in colored aren't that useful.
 
 ## v0.8.5
 
@@ -325,7 +324,7 @@ migrated off the GitHub Package Registry now.
 ### Fixed
 
 - Fixed invalid links in the documentation (links broken by the migration to
-TypeScript)
+  TypeScript)
 
 ### Updated dependencies
 
