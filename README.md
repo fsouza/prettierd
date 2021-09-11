@@ -66,11 +66,18 @@ Then formatting Ruby files should be possible.
 
 ## Provide Default Configuration
 
-You can provide a default configuration for the prettier via setting the environment variable `PRETTIERD_DEFAULT_CONFIG` to the exact path of the `prettier` configuration file.
+You can provide a default configuration for the prettier via setting the
+environment variable `PRETTIERD_DEFAULT_CONFIG` to the exact path of the
+`prettier` configuration file.
 
 ## Local Instance
 
-If you have locally installed `prettier` in your package, it will use that. Elsewise it will use the one bundled with the package itself.
+If you have locally installed `prettier` in your package, it will use that.
+Otherwise, it will use the one bundled with the package itself.
+
+If you want to use prettierd exclusively with the locally installed prettier
+package, you can set the environment variable `PRETTIERD_LOCAL_PRETTIER_ONLY`
+(any truthy value will do, good examples are `true` or `1`).
 
 ## Editor integration
 
