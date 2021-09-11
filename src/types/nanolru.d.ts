@@ -4,7 +4,7 @@ declare module "nanolru" {
   declare class LRU {
     constructor(options: { max: number; maxAge: number });
 
-    get<K, V>(key: K): V | null;
+    get<K, V>(key: K): V | undefined;
 
     set<K, V>(key: K, value: V): void;
   }
