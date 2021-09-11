@@ -1,5 +1,20 @@
 # prettierd
 
+## v0.17.0
+
+> Sep 11, 2021
+
+### Added
+
+- Support for running prettierd exclusively with the local `prettier` package
+  (via the environment variable `PRETTIERD_LOCAL_PRETTIER_ONLY`)
+
+### Changed
+
+- Changed how prettierd resolves the local package of `prettier`. Now it'll
+  use `dirname(filePath)`, meaning it can detect local installations of prettier
+  even when `node_modules` isn't at the root of the repository.
+
 ## v0.16.0
 
 > Aug 30, 2021
