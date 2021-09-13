@@ -84,7 +84,6 @@ async function resolveConfigNoCache(
   });
 
   if (!config && process.env.PRETTIERD_DEFAULT_CONFIG) {
-    console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
     config = await prettier.resolveConfig(
       dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
       {
