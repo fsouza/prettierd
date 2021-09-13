@@ -5,6 +5,7 @@ import { promisify } from "util";
 const { version } = require("../package.json");
 
 const readFile = promisify(fs.readFile);
+const validCommands = ["restart", "start", "status", "stop"];
 
 type Action = "PRINT_VERSION" | "INVOKE_CORE_D";
 
@@ -31,12 +32,7 @@ async function main(args: string[]): Promise<void> {
 
   const core_d = require("core_d");
 
-  if (
-    cmdOrFilename === "start" ||
-    cmdOrFilename === "stop" ||
-    cmdOrFilename === "restart" ||
-    cmdOrFilename === "status"
-  ) {
+  if (validCommands.includes(cmdOrFilename)) {
     core_d[cmdOrFilename]();
     return;
   }
