@@ -84,7 +84,6 @@ async function resolveConfigNoCache(
   });
 
   if (!config && process.env.PRETTIERD_DEFAULT_CONFIG) {
-    console.log(process.env.PRETTIERD_DEFAULT_CONFIG);
     config = await prettier.resolveConfig(
       dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
       {
@@ -139,17 +138,17 @@ async function resolvePrettier(
     });
 }
 
-function resolveFile(cwd: string, fileName: string): [string, string] {
+function resolveFile(cwd: string, fileName: string): string {
   if (path.isAbsolute(fileName)) {
-    return [fileName, fileName];
+    return fileName;
   }
 
-  return [cwd, path.join(cwd, fileName)];
+  return path.join(cwd, fileName);
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
   const fileName = args[0] === "--no-color" ? args[1] : args[0];
-  const [, fullPath] = resolveFile(cwd, fileName);
+  const fullPath = resolveFile(cwd, fileName);
   const prettier = await resolvePrettier(path.dirname(fullPath));
   if (!prettier) {
     return text;
