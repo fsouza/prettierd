@@ -5,6 +5,7 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Installation guide](#installation-guide)
 - [Using in the command line with node.js](#using-in-the-command-line-with-nodejs)
 - [Using with TCP (moar speed)](#using-with-tcp-moar-speed)
 - [Supported languages / plugins](#supported-languages--plugins)
@@ -19,6 +20,14 @@ Wanna run prettier in your editor, but fast? Welcome to prettierd!
 
 This is built on top of [core_d.js](https://github.com/mantoni/core_d.js) and
 integrates with prettier.
+
+## Installation guide
+
+```
+$ npm install -g @fsouza/prettierd
+```
+
+**NOTE**: `npm` comes builtin to [`node`](https://nodejs.org).
 
 ## Using in the command line with node.js
 
