@@ -157,7 +157,6 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
 
   return prettier.format(text, {
     ...options,
-    // @ts-ignore: pluginSearchDirs is not declared in the prettier interface :(
     pluginSearchDirs: await pluginSearchDirs(cwd),
   });
 }
