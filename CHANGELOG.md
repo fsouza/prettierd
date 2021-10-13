@@ -1,5 +1,18 @@
 # prettierd
 
+## v0.17.1
+
+> Oct 13, 2021
+
+### Added
+
+- Improved documentation for local setup, covering the setup for users that
+  don't have node.js installed (thanks @kunish)
+
+### Changed
+
+- Some minor refactors and improvement to code and typing (thanks @sQVe)
+
 ## v0.17.0
 
 > Sep 11, 2021
