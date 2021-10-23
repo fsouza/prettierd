@@ -61,14 +61,16 @@ async function findParent(
 async function pluginSearchDirs(cwd: string): Promise<string[]> {
   const result: string[] = [];
 
-  const localPath = path.join(cwd, "node_modules");
-  if (await isDir(localPath)) {
-    result.push(localPath);
+  const localNodeModules = await findParent(cwd, "node_modules");
+  if (localNodeModules) {
+    result.push(path.dirname(localNodeModules));
   }
 
-  const parentNodeModules = await findParent(__dirname, "node_modules");
-  if (parentNodeModules) {
-    result.push(parentNodeModules);
+  if (!process.env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
+    const parentNodeModules = await findParent(__dirname, "node_modules");
+    if (parentNodeModules) {
+      result.push(parentNodeModules);
+    }
   }
 
   return result;
