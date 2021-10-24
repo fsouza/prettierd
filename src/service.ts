@@ -146,13 +146,68 @@ function resolveFile(cwd: string, fileName: string): string {
   return path.join(cwd, fileName);
 }
 
+interface CLIArguments {
+  noColor: boolean;
+  /** @see https://prettier.io/docs/en/cli.html#--ignore-path */
+  ignorePath: string;
+}
+
+const defaultCLIArguments: CLIArguments = {
+  noColor: false,
+  ignorePath: ".prettierignore",
+};
+
+function parseCLIArguments(args: string[]): [CLIArguments, string] {
+  const parsedArguments: CLIArguments = { ...defaultCLIArguments };
+  let fileName: string | null = null;
+
+  const argsIterator = args[Symbol.iterator]();
+  for (const arg of argsIterator) {
+    switch (arg) {
+      case "--no-color":
+        parsedArguments.noColor = true;
+        break;
+
+      case "--ignore-path": {
+        const nextArg = argsIterator.next();
+        if (nextArg.done) {
+          throw new Error("--ignore-path option expects a file path");
+        }
+
+        parsedArguments.ignorePath = nextArg.value;
+        break;
+      }
+
+      default:
+        // NOTE: positional arguments are assumed to be file paths
+        if (fileName) {
+          throw new Error("Only a single file path is supported");
+        }
+        fileName = arg;
+        break;
+    }
+  }
+
+  if (!fileName) {
+    throw new Error("File name must be provided as an argument");
+  }
+
+  return [parsedArguments, fileName];
+}
+
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const fileName = args[0] === "--no-color" ? args[1] : args[0];
+  const [{ ignorePath }, fileName] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const prettier = await resolvePrettier(path.dirname(fullPath));
   if (!prettier) {
     return text;
   }
+
+  const { ignored } = await prettier.getFileInfo(fileName, { ignorePath });
+  if (ignored) {
+    return text;
+  }
+
   const options = await resolveConfig(prettier, fullPath);
 
   return prettier.format(text, {
