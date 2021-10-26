@@ -7,7 +7,7 @@
 ### Added
 
 - Support for `.prettierignore` files (thanks @Gelio)
-- Support for locally-installed plugins
+- Support for locally-installed plugins (thanks @vatosarmat)
 
 ## v0.17.1
 
