@@ -1,5 +1,14 @@
 # prettierd
 
+## v0.18.0
+
+> Oct 26, 2021
+
+### Added
+
+- Support for `.prettierignore` files (thanks @Gelio)
+- Support for locally-installed plugins
+
 ## v0.17.1
 
 > Oct 13, 2021
