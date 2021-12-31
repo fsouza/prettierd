@@ -3,6 +3,13 @@ interface Command {
   description: string;
 }
 
+/**
+ * Note: today this is an array that is only used to display the help menu,
+ * but the plan is to improve later to be an array where commands will be defined.
+ *
+ * TODO: improve the way of displaying the help menu so that no longer need all the "\t's"
+ * (as today it just strings the (\t) is used to keep all descriptions aligned.)
+ */
 const commands: Command[] = [
   {
     command: "--help",
