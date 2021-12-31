@@ -1,5 +1,15 @@
 # prettierd
 
+## v0.18.1
+
+### Added
+
+- Help menu with `--help` (thanks @joao-vitor-sr)
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.5.1`
+
 ## v0.18.0
 
 > Oct 26, 2021
