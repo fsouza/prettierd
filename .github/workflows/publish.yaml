@@ -3,22 +3,19 @@ on: create
 
 jobs:
   release:
+    if: github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.0
-        if: github.event.ref_type == 'tag'
 
       - uses: actions/setup-node@v3.0.0
-        if: github.event.ref_type == 'tag'
         with:
           node-version: "14.x"
           registry-url: "https://registry.npmjs.org"
           scope: "@fsouza"
 
       - run: yarn install --frozen-lockfile
-        if: github.event.ref_type == 'tag'
 
       - run: yarn publish --access public
-        if: github.event.ref_type == 'tag'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
