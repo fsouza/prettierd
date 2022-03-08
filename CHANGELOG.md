@@ -1,5 +1,11 @@
 # prettierd
 
+## v0.19.0
+
+### Updated dependencies
+
+- `core_d` upgraded to `^4.0.0`
+
 ## v0.18.1
 
 ### Added
