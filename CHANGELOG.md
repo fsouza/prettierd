@@ -1,5 +1,11 @@
 # prettierd
 
+## v0.19.1
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.6.0`
+
 ## v0.19.0
 
 ### Updated dependencies
