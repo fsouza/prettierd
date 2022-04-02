@@ -1,9 +1,11 @@
 name: Publish
-on: create
+on:
+  push:
+    tags:
+      - "v*"
 
 jobs:
   release:
-    if: github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.0
