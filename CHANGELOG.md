@@ -1,5 +1,14 @@
 # prettierd
 
+## v0.19.2
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.6.1`
+
+**Note:** this release was also pushed to validate a change in the automatic
+release process.
+
 ## v0.19.1
 
 ### Updated dependencies
