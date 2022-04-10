@@ -1,5 +1,20 @@
 # prettierd
 
+## v0.20.0
+
+### New features
+
+Added some helper commands flags for debugging/fixing issues.
+
+- `prettierd flush-cache` to flush all caches
+- `prettierd --debug-info <file>` to print information about which version of
+  prettier will be used for formatting the provided file (and from where it's
+  being loaded)
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.6.2`
+
 ## v0.19.2
 
 ### Updated dependencies
