@@ -11,7 +11,7 @@ const stat = promisify(fs.stat);
 
 const cacheParams = { max: 500, maxAge: 60000 };
 
-const caches = {
+const caches: { [name: string]: LRU } = {
   configCache: new LRU(cacheParams),
   importCache: new LRU(cacheParams),
   parentCache: new LRU(cacheParams),
@@ -115,29 +115,56 @@ async function resolveConfig(
   return config;
 }
 
+export type ResolvedPrettier = {
+  module: typeof Prettier;
+  filePath: string;
+  cacheHit: boolean;
+};
+
 async function resolvePrettier(
-  dir: string
-): Promise<typeof Prettier | undefined> {
-  const cached = caches.importCache.get<string, typeof Prettier | false>(dir);
-  if (cached) {
-    return cached;
+  filePath: string
+): Promise<ResolvedPrettier | undefined> {
+  const cachedValue = caches.importCache.get<
+    string,
+    [typeof Prettier, string] | false
+  >(filePath);
+
+  if (cachedValue) {
+    const [module, filePath] = cachedValue;
+    return {
+      module,
+      filePath,
+      cacheHit: true,
+    };
   }
 
-  if (cached === false) {
+  if (cachedValue === false) {
     return undefined;
   }
 
-  return import(require.resolve("prettier", { paths: [dir] }))
-    .catch(() => {
-      if (process.env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
-        return undefined;
-      }
-      return import("prettier");
-    })
-    .then((v) => {
-      caches.importCache.set(dir, v ?? false);
-      return v;
-    });
+  let path: string;
+  try {
+    path = require.resolve("prettier", { paths: [filePath] });
+  } catch (e) {
+    if (process.env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
+      caches.importCache.set(filePath, false);
+      return undefined;
+    }
+    path = require.resolve("prettier");
+  }
+
+  return import(path).then((v) => {
+    if (v !== undefined) {
+      caches.importCache.set(filePath, [v, path]);
+      return {
+        module: v,
+        filePath: path,
+        cacheHit: false,
+      };
+    }
+    caches.importCache.set(filePath, false);
+    return undefined;
+  });
 }
 
 function resolveFile(cwd: string, fileName: string): string {
@@ -200,11 +227,12 @@ function parseCLIArguments(args: string[]): [CLIArguments, string] {
 async function run(cwd: string, args: string[], text: string): Promise<string> {
   const [{ ignorePath }, fileName] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
-  const prettier = await resolvePrettier(path.dirname(fullPath));
-  if (!prettier) {
+  const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
+  if (!resolvedPrettier) {
     return text;
   }
 
+  const { module: prettier } = resolvedPrettier;
   const { ignored } = await prettier.getFileInfo(fileName, { ignorePath });
   if (ignored) {
     return text;
@@ -216,6 +244,40 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     ...options,
     pluginSearchDirs: await pluginSearchDirs(cwd),
   });
+}
+
+export type CacheInfo = {
+  name: string;
+  length: number;
+  keys: string[];
+};
+
+export type DebugInfo = {
+  resolvedPrettier?: ResolvedPrettier;
+  cacheInfo: CacheInfo[];
+};
+
+export async function getDebugInfo(
+  cwd: string,
+  args: string[]
+): Promise<DebugInfo> {
+  const [_, fileName] = parseCLIArguments(args);
+  const fullPath = resolveFile(cwd, fileName);
+
+  const resolvedPrettier = await resolvePrettier(fullPath);
+  const cacheInfo = Object.keys(caches).map((cacheName) => ({
+    name: cacheName,
+    length: caches[cacheName].length,
+    keys: caches[cacheName].keys,
+  }));
+
+  return { resolvedPrettier, cacheInfo };
+}
+
+export function flushCache(): void {
+  for (const cacheName in caches) {
+    caches[cacheName].clear();
+  }
 }
 
 export function invoke(

@@ -17,7 +17,7 @@ const commands: Command[] = [
   },
   {
     command: "--version\t",
-    description: "Print prettierd version.",
+    description: "Print prettierd version and exit.",
   },
   {
     command: "--ignore-path <path>",
@@ -26,6 +26,15 @@ const commands: Command[] = [
   {
     command: "--no-color\t",
     description: "Do not colorize error messages.",
+  },
+  {
+    command: "--debug-info <path>",
+    description:
+      "Print debugging information (current cache status and automatically discovered version of prettier for the provided file path, for example `prettierd --debug-info src/my-file.js`).",
+  },
+  {
+    command: "flush-cache\t",
+    description: "Flush the cache.",
   },
   {
     command: "start\t\t",

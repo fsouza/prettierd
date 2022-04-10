@@ -4,33 +4,70 @@ import { promisify } from "util";
 // @ts-ignore
 import { version } from "../package.json";
 import { displayHelp } from "./args";
+import { DebugInfo, flushCache, getDebugInfo } from "./service";
 
 const readFile = promisify(fs.readFile);
 const validCommands = ["restart", "start", "status", "stop"];
 
-type Action = "PRINT_VERSION" | "INVOKE_CORE_D" | "PRINT_HELP";
+type Action =
+  | "PRINT_VERSION"
+  | "INVOKE_CORE_D"
+  | "PRINT_HELP"
+  | "PRINT_DEBUG_INFO"
+  | "FLUSH_CACHE";
 
 function processArgs(args: string[]): [Action, string] {
-  if (args.find((arg) => arg === "--version")) {
-    return ["PRINT_VERSION", ""];
-  }
+  const flagsToAction: { [flag: string]: Action | undefined } = {
+    "--version": "PRINT_VERSION",
+    "--help": "PRINT_HELP",
+    "flush-cache": "FLUSH_CACHE",
+    "--debug-info": "PRINT_DEBUG_INFO",
+  };
 
-  if (args.find((arg) => arg === "--help")) {
-    return ["PRINT_HELP", ""];
+  for (const arg of args) {
+    const action = flagsToAction[arg];
+    if (action) {
+      return [action, ""];
+    }
   }
 
   return ["INVOKE_CORE_D", args[0]];
 }
 
+function printDebugInfo(debugInfo: DebugInfo): void {
+  if (debugInfo.resolvedPrettier) {
+    console.log(
+      `prettier version: ${debugInfo.resolvedPrettier.module.version}
+  Loaded from: ${debugInfo.resolvedPrettier.filePath}
+  Cache: ${debugInfo.resolvedPrettier.cacheHit ? "hit" : "miss"}\n`
+    );
+  }
+
+  console.log("Cache information:");
+  debugInfo.cacheInfo.forEach((cacheInfo) => {
+    console.log(`- "${cacheInfo.name}" contains ${cacheInfo.length} items`);
+  });
+}
+
 async function main(args: string[]): Promise<void> {
   const [action, cmdOrFilename] = processArgs(args);
 
-  if (action === "PRINT_VERSION") {
-    console.log(`prettierd ${version}`);
-    return;
-  } else if (action === "PRINT_HELP") {
-    displayHelp();
-    return;
+  switch (action) {
+    case "PRINT_VERSION":
+      console.log(`prettierd ${version}\n`);
+      return;
+    case "PRINT_HELP":
+      displayHelp();
+      return;
+    case "PRINT_DEBUG_INFO":
+      console.log(`prettierd ${version}`);
+      const debugInfo = await getDebugInfo(process.cwd(), args.slice(1));
+      printDebugInfo(debugInfo);
+      return;
+    case "FLUSH_CACHE":
+      flushCache();
+      console.log("success");
+      return;
   }
 
   const title = "prettierd";
