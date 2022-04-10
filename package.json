@@ -22,10 +22,10 @@
   "bugs": {
     "url": "https://github.com/fsouza/prettierd/issues"
   },
-  "homepage": "https://github.com/fsouza/prettierd#readme",
+  "homepage": "https://github.com/fsouza/prettierd",
   "devDependencies": {
     "@types/node": "^17.0.0",
-    "@types/prettier": "^2.4.0",
+    "@types/prettier": "^2.6.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {
