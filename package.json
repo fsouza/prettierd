@@ -31,7 +31,7 @@
   "dependencies": {
     "core_d": "^4.0.0",
     "nanolru": "^1.0.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.6.2"
   },
   "files": [
     "bin",
