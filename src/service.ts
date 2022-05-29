@@ -284,7 +284,6 @@ export function invoke(
   cwd: string,
   args: string[],
   text: string,
-  _mtime: number,
   cb: (_err?: string, _resp?: string) => void
 ): void {
   run(cwd, args, text)
