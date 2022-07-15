@@ -18,6 +18,7 @@ jobs:
         node-version:
           - "14.x"
           - "16.x"
+          - "18.x"
 
     name: build
     runs-on: ${{ matrix.os }}-latest
