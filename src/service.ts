@@ -26,6 +26,30 @@ async function isDir(path: string): Promise<boolean> {
   }
 }
 
+const toCamelcase = (str: string) =>
+  str.replace(/-./g, (s) => s[1].toUpperCase());
+
+function argsToOptions(args: string[]) {
+  const options: Record<string, boolean | number | string> = {};
+
+  for (const arg of args) {
+    let [key, ...valueParts] = arg.replace(/^-+/, "").split("=");
+    let value: boolean | number | string = valueParts.join("=");
+    if (!value.length) {
+      value = !key.startsWith("no-");
+      if (!value) {
+        key = key.slice(3);
+      }
+    } else if (/^\d+$/.test(value)) {
+      value = Number(value);
+    }
+
+    options[toCamelcase(key)] = value;
+  }
+
+  return options;
+}
+
 async function findParent(
   start: string,
   search: string
@@ -186,34 +210,41 @@ const defaultCLIArguments: CLIArguments = {
   ignorePath: ".prettierignore",
 };
 
-function parseCLIArguments(args: string[]): [CLIArguments, string] {
+function parseCLIArguments(
+  args: string[]
+): [CLIArguments, string, Record<string, unknown>] {
   const parsedArguments: CLIArguments = { ...defaultCLIArguments };
   let fileName: string | null = null;
 
+  const optionArgs: string[] = [];
+
   const argsIterator = args[Symbol.iterator]();
   for (const arg of argsIterator) {
-    switch (arg) {
-      case "--no-color":
-        parsedArguments.noColor = true;
-        break;
+    if (arg.startsWith("-")) {
+      switch (arg) {
+        case "--no-color":
+          parsedArguments.noColor = true;
+          break;
 
-      case "--ignore-path": {
-        const nextArg = argsIterator.next();
-        if (nextArg.done) {
-          throw new Error("--ignore-path option expects a file path");
+        case "--ignore-path": {
+          const nextArg = argsIterator.next();
+          if (nextArg.done) {
+            throw new Error("--ignore-path option expects a file path");
+          }
+
+          parsedArguments.ignorePath = nextArg.value;
+          break;
         }
-
-        parsedArguments.ignorePath = nextArg.value;
-        break;
+        default: {
+          optionArgs.push(arg);
+        }
       }
-
-      default:
-        // NOTE: positional arguments are assumed to be file paths
-        if (fileName) {
-          throw new Error("Only a single file path is supported");
-        }
-        fileName = arg;
-        break;
+    } else {
+      if (fileName) {
+        throw new Error("Only a single file path is supported");
+      }
+      // NOTE: positional arguments are assumed to be file paths
+      fileName = arg;
     }
   }
 
@@ -221,11 +252,11 @@ function parseCLIArguments(args: string[]): [CLIArguments, string] {
     throw new Error("File name must be provided as an argument");
   }
 
-  return [parsedArguments, fileName];
+  return [parsedArguments, fileName, argsToOptions(optionArgs)];
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const [{ ignorePath }, fileName] = parseCLIArguments(args);
+  const [{ ignorePath }, fileName, cliOptions] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
   if (!resolvedPrettier) {
@@ -238,10 +269,11 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     return text;
   }
 
-  const options = await resolveConfig(prettier, fullPath);
+  const configOptions = await resolveConfig(prettier, fullPath);
 
   return prettier.format(text, {
-    ...options,
+    ...cliOptions,
+    ...configOptions,
     pluginSearchDirs: await pluginSearchDirs(cwd),
   });
 }
