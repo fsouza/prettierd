@@ -10,6 +10,7 @@ import fs from "fs";
 type CliOptions = {
   [key: string]: boolean | number | string | undefined;
   configPrecedence: "cli-override" | "file-override" | "prefer-file";
+  editorconfig?: boolean;
 };
 
 const stat = promisify(fs.stat);
@@ -109,10 +110,11 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
 
 async function resolveConfigNoCache(
   prettier: typeof Prettier,
-  filepath: string
+  filepath: string,
+  editorconfig: boolean = true
 ): Promise<Prettier.Options | null> {
   let config = await prettier.resolveConfig(filepath, {
-    editorconfig: true,
+    editorconfig,
     useCache: false,
   });
 
@@ -121,7 +123,7 @@ async function resolveConfigNoCache(
       dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
       {
         config: process.env.PRETTIERD_DEFAULT_CONFIG,
-        editorconfig: true,
+        editorconfig,
         useCache: false,
       }
     );
@@ -132,7 +134,8 @@ async function resolveConfigNoCache(
 
 async function resolveConfig(
   prettier: typeof Prettier,
-  filepath: string
+  filepath: string,
+  editorconfig?: boolean
 ): Promise<Prettier.Options | null> {
   const cachedValue = caches.configCache.get<string, Prettier.Options | null>(
     filepath
@@ -141,7 +144,7 @@ async function resolveConfig(
     return cachedValue;
   }
 
-  const config = await resolveConfigNoCache(prettier, filepath);
+  const config = await resolveConfigNoCache(prettier, filepath, editorconfig);
   caches.configCache.set(filepath, config);
   return config;
 }
@@ -261,7 +264,11 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const [{ ignorePath }, fileName, { configPrecedence, ...cliOptions }] = parseCLIArguments(args);
+  const [
+    { ignorePath },
+    fileName,
+    { configPrecedence, editorconfig, ...cliOptions },
+  ] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
   if (!resolvedPrettier) {
@@ -274,7 +281,7 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     return text;
   }
 
-  const fileOptions = await resolveConfig(prettier, fullPath);
+  const fileOptions = await resolveConfig(prettier, fullPath, editorconfig);
 
   const options: Record<string, unknown> =
     configPrecedence === "cli-override"
