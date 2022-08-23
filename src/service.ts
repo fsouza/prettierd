@@ -7,6 +7,11 @@ import type Prettier from "prettier";
 import { promisify } from "util";
 import fs from "fs";
 
+type CliOptions = {
+  [key: string]: boolean | number | string | undefined;
+  configPrecedence: "cli-override" | "file-override" | "prefer-file";
+};
+
 const stat = promisify(fs.stat);
 
 const cacheParams = { max: 500, maxAge: 60000 };
@@ -30,7 +35,9 @@ const toCamelcase = (str: string) =>
   str.replace(/-./g, (s) => s[1].toUpperCase());
 
 function argsToOptions(args: string[]) {
-  const options: Record<string, boolean | number | string> = {};
+  const options: CliOptions = {
+    configPrecedence: "cli-override",
+  };
 
   for (const arg of args) {
     let [key, ...valueParts] = arg.replace(/^-+/, "").split("=");
@@ -103,7 +110,7 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
 async function resolveConfigNoCache(
   prettier: typeof Prettier,
   filepath: string
-): Promise<Prettier.Options> {
+): Promise<Prettier.Options | null> {
   let config = await prettier.resolveConfig(filepath, {
     editorconfig: true,
     useCache: false,
@@ -120,17 +127,17 @@ async function resolveConfigNoCache(
     );
   }
 
-  return { ...config, filepath };
+  return config;
 }
 
 async function resolveConfig(
   prettier: typeof Prettier,
   filepath: string
-): Promise<Prettier.Options> {
-  const cachedValue = caches.configCache.get<string, Prettier.Options>(
+): Promise<Prettier.Options | null> {
+  const cachedValue = caches.configCache.get<string, Prettier.Options | null>(
     filepath
   );
-  if (cachedValue) {
+  if (cachedValue || cachedValue === null) {
     return cachedValue;
   }
 
@@ -210,9 +217,7 @@ const defaultCLIArguments: CLIArguments = {
   ignorePath: ".prettierignore",
 };
 
-function parseCLIArguments(
-  args: string[]
-): [CLIArguments, string, Record<string, unknown>] {
+function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
   const parsedArguments: CLIArguments = { ...defaultCLIArguments };
   let fileName: string | null = null;
 
@@ -256,7 +261,7 @@ function parseCLIArguments(
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const [{ ignorePath }, fileName, cliOptions] = parseCLIArguments(args);
+  const [{ ignorePath }, fileName, { configPrecedence, ...cliOptions }] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
   if (!resolvedPrettier) {
@@ -269,11 +274,18 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     return text;
   }
 
-  const configOptions = await resolveConfig(prettier, fullPath);
+  const fileOptions = await resolveConfig(prettier, fullPath);
+
+  const options: Record<string, unknown> =
+    configPrecedence === "cli-override"
+      ? { ...fileOptions, ...cliOptions }
+      : configPrecedence === "file-override"
+      ? { ...cliOptions, ...fileOptions }
+      : fileOptions || cliOptions;
 
   return prettier.format(text, {
-    ...cliOptions,
-    ...configOptions,
+    ...options,
+    filepath: fullPath,
     pluginSearchDirs: await pluginSearchDirs(cwd),
   });
 }
