@@ -9,6 +9,7 @@ import fs from "fs";
 
 type CliOptions = {
   [key: string]: boolean | number | string | undefined;
+  config?: false | string;
   configPrecedence: "cli-override" | "file-override" | "prefer-file";
   editorconfig?: boolean;
 };
@@ -111,7 +112,7 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
 async function resolveConfigNoCache(
   prettier: typeof Prettier,
   filepath: string,
-  editorconfig: boolean = true
+  { editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
 ): Promise<Prettier.Options | null> {
   let config = await prettier.resolveConfig(filepath, {
     editorconfig,
@@ -135,8 +136,12 @@ async function resolveConfigNoCache(
 async function resolveConfig(
   prettier: typeof Prettier,
   filepath: string,
-  editorconfig?: boolean
+  options: Pick<CliOptions, "config" | "editorconfig">
 ): Promise<Prettier.Options | null> {
+  if (options.config === false) {
+    return null;
+  }
+
   const cachedValue = caches.configCache.get<string, Prettier.Options | null>(
     filepath
   );
@@ -144,7 +149,7 @@ async function resolveConfig(
     return cachedValue;
   }
 
-  const config = await resolveConfigNoCache(prettier, filepath, editorconfig);
+  const config = await resolveConfigNoCache(prettier, filepath, options);
   caches.configCache.set(filepath, config);
   return config;
 }
@@ -267,7 +272,7 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
   const [
     { ignorePath },
     fileName,
-    { configPrecedence, editorconfig, ...cliOptions },
+    { config, configPrecedence, editorconfig, ...cliOptions },
   ] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
@@ -281,7 +286,10 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     return text;
   }
 
-  const fileOptions = await resolveConfig(prettier, fullPath, editorconfig);
+  const fileOptions = await resolveConfig(prettier, fullPath, {
+    config,
+    editorconfig,
+  });
 
   const options: Record<string, unknown> =
     configPrecedence === "cli-override"
