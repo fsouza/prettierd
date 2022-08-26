@@ -7,6 +7,13 @@ import type Prettier from "prettier";
 import { promisify } from "util";
 import fs from "fs";
 
+type CliOptions = {
+  [key: string]: boolean | number | string | undefined;
+  config?: false | string;
+  configPrecedence: "cli-override" | "file-override" | "prefer-file";
+  editorconfig?: boolean;
+};
+
 const stat = promisify(fs.stat);
 
 const cacheParams = { max: 500, maxAge: 60000 };
@@ -24,6 +31,32 @@ async function isDir(path: string): Promise<boolean> {
   } catch (e) {
     return false;
   }
+}
+
+const toCamelcase = (str: string) =>
+  str.replace(/-./g, (s) => s[1].toUpperCase());
+
+function argsToOptions(args: string[]) {
+  const options: CliOptions = {
+    configPrecedence: "cli-override",
+  };
+
+  for (const arg of args) {
+    let [key, ...valueParts] = arg.replace(/^-+/, "").split("=");
+    let value: boolean | number | string = valueParts.join("=");
+    if (!value.length) {
+      value = !key.startsWith("no-");
+      if (!value) {
+        key = key.slice(3);
+      }
+    } else if (/^\d+$/.test(value)) {
+      value = Number(value);
+    }
+
+    options[toCamelcase(key)] = value;
+  }
+
+  return options;
 }
 
 async function findParent(
@@ -78,10 +111,11 @@ async function pluginSearchDirs(cwd: string): Promise<string[]> {
 
 async function resolveConfigNoCache(
   prettier: typeof Prettier,
-  filepath: string
-): Promise<Prettier.Options> {
+  filepath: string,
+  { editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
+): Promise<Prettier.Options | null> {
   let config = await prettier.resolveConfig(filepath, {
-    editorconfig: true,
+    editorconfig,
     useCache: false,
   });
 
@@ -90,27 +124,32 @@ async function resolveConfigNoCache(
       dirname(process.env.PRETTIERD_DEFAULT_CONFIG),
       {
         config: process.env.PRETTIERD_DEFAULT_CONFIG,
-        editorconfig: true,
+        editorconfig,
         useCache: false,
       }
     );
   }
 
-  return { ...config, filepath };
+  return config;
 }
 
 async function resolveConfig(
   prettier: typeof Prettier,
-  filepath: string
-): Promise<Prettier.Options> {
-  const cachedValue = caches.configCache.get<string, Prettier.Options>(
+  filepath: string,
+  options: Pick<CliOptions, "config" | "editorconfig">
+): Promise<Prettier.Options | null> {
+  if (options.config === false) {
+    return null;
+  }
+
+  const cachedValue = caches.configCache.get<string, Prettier.Options | null>(
     filepath
   );
-  if (cachedValue) {
+  if (cachedValue || cachedValue === null) {
     return cachedValue;
   }
 
-  const config = await resolveConfigNoCache(prettier, filepath);
+  const config = await resolveConfigNoCache(prettier, filepath, options);
   caches.configCache.set(filepath, config);
   return config;
 }
@@ -186,34 +225,39 @@ const defaultCLIArguments: CLIArguments = {
   ignorePath: ".prettierignore",
 };
 
-function parseCLIArguments(args: string[]): [CLIArguments, string] {
+function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
   const parsedArguments: CLIArguments = { ...defaultCLIArguments };
   let fileName: string | null = null;
 
+  const optionArgs: string[] = [];
+
   const argsIterator = args[Symbol.iterator]();
   for (const arg of argsIterator) {
-    switch (arg) {
-      case "--no-color":
-        parsedArguments.noColor = true;
-        break;
+    if (arg.startsWith("-")) {
+      switch (arg) {
+        case "--no-color":
+          parsedArguments.noColor = true;
+          break;
 
-      case "--ignore-path": {
-        const nextArg = argsIterator.next();
-        if (nextArg.done) {
-          throw new Error("--ignore-path option expects a file path");
+        case "--ignore-path": {
+          const nextArg = argsIterator.next();
+          if (nextArg.done) {
+            throw new Error("--ignore-path option expects a file path");
+          }
+
+          parsedArguments.ignorePath = nextArg.value;
+          break;
         }
-
-        parsedArguments.ignorePath = nextArg.value;
-        break;
+        default: {
+          optionArgs.push(arg);
+        }
       }
-
-      default:
-        // NOTE: positional arguments are assumed to be file paths
-        if (fileName) {
-          throw new Error("Only a single file path is supported");
-        }
-        fileName = arg;
-        break;
+    } else {
+      if (fileName) {
+        throw new Error("Only a single file path is supported");
+      }
+      // NOTE: positional arguments are assumed to be file paths
+      fileName = arg;
     }
   }
 
@@ -221,11 +265,15 @@ function parseCLIArguments(args: string[]): [CLIArguments, string] {
     throw new Error("File name must be provided as an argument");
   }
 
-  return [parsedArguments, fileName];
+  return [parsedArguments, fileName, argsToOptions(optionArgs)];
 }
 
 async function run(cwd: string, args: string[], text: string): Promise<string> {
-  const [{ ignorePath }, fileName] = parseCLIArguments(args);
+  const [
+    { ignorePath },
+    fileName,
+    { config, configPrecedence, editorconfig, ...cliOptions },
+  ] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
   const resolvedPrettier = await resolvePrettier(path.dirname(fullPath));
   if (!resolvedPrettier) {
@@ -238,10 +286,21 @@ async function run(cwd: string, args: string[], text: string): Promise<string> {
     return text;
   }
 
-  const options = await resolveConfig(prettier, fullPath);
+  const fileOptions = await resolveConfig(prettier, fullPath, {
+    config,
+    editorconfig,
+  });
+
+  const options: Record<string, unknown> =
+    configPrecedence === "cli-override"
+      ? { ...fileOptions, ...cliOptions }
+      : configPrecedence === "file-override"
+      ? { ...cliOptions, ...fileOptions }
+      : fileOptions || cliOptions;
 
   return prettier.format(text, {
     ...options,
+    filepath: fullPath,
     pluginSearchDirs: await pluginSearchDirs(cwd),
   });
 }
