@@ -1,5 +1,21 @@
 # prettierd
 
+## v0.22.0
+
+### New features
+
+- Support most of prettier command line options (thanks @MunifTanjim)
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.7.1`
+
+## v0.21.1
+
+### Fixed
+
+- fix compatibility with core_d 5.0.1
+
 ## v0.21.0
 
 ### Updated dependencies
