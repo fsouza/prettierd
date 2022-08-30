@@ -91,7 +91,7 @@ async function findParent(
   return await findParent(parent, search);
 }
 
-type ClientEnv = { [name: string]: string };
+type ClientEnv = { [name: string]: string | undefined };
 
 async function pluginSearchDirs(
   cwd: string,
@@ -370,7 +370,7 @@ export async function getDebugInfo(
   const [_, fileName] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
 
-  const resolvedPrettier = await resolvePrettier(fullPath);
+  const resolvedPrettier = await resolvePrettier(process.env, fullPath);
   const cacheInfo = Object.keys(caches).map((cacheName) => ({
     name: cacheName,
     length: caches[cacheName].length,
