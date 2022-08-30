@@ -91,12 +91,9 @@ async function findParent(
   return await findParent(parent, search);
 }
 
-type ClientEnv = { [name: string]: string | undefined };
+type EnvMap = { [name: string]: string | undefined };
 
-async function pluginSearchDirs(
-  cwd: string,
-  clientEnv: ClientEnv
-): Promise<string[]> {
+async function pluginSearchDirs(cwd: string, env: EnvMap): Promise<string[]> {
   const result: string[] = [];
 
   const localNodeModules = await findParent(cwd, "node_modules");
@@ -104,10 +101,7 @@ async function pluginSearchDirs(
     result.push(path.dirname(localNodeModules));
   }
 
-  if (
-    !process.env.PRETTIERD_LOCAL_PRETTIER_ONLY &&
-    !clientEnv.PRETTIERD_LOCAL_PRETTIER_ONLY
-  ) {
+  if (!env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
     const parentNodeModules = await findParent(__dirname, "node_modules");
     if (parentNodeModules) {
       result.push(parentNodeModules);
@@ -133,7 +127,7 @@ async function tryToResolveConfigFromEnvironmentValue(
 }
 
 async function resolveConfigNoCache(
-  clientEnv: ClientEnv,
+  env: EnvMap,
   prettier: typeof Prettier,
   filepath: string,
   { editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
@@ -143,15 +137,11 @@ async function resolveConfigNoCache(
     useCache: false,
   });
 
-  const defaultConfigFiles = [
-    process.env.PRETTIERD_DEFAULT_CONFIG,
-    clientEnv.PRETTIERD_DEFAULT_CONFIG,
-  ];
-  for (let i = 0; i < defaultConfigFiles.length && !config; i++) {
+  if (!config) {
     config = await tryToResolveConfigFromEnvironmentValue(
       prettier,
       editorconfig,
-      defaultConfigFiles[i]
+      env.PRETTIERD_LOCAL_PRETTIER_ONLY
     );
   }
 
@@ -159,7 +149,7 @@ async function resolveConfigNoCache(
 }
 
 async function resolveConfig(
-  clientEnv: ClientEnv,
+  env: EnvMap,
   prettier: typeof Prettier,
   filepath: string,
   options: Pick<CliOptions, "config" | "editorconfig">
@@ -175,12 +165,7 @@ async function resolveConfig(
     return cachedValue;
   }
 
-  const config = await resolveConfigNoCache(
-    clientEnv,
-    prettier,
-    filepath,
-    options
-  );
+  const config = await resolveConfigNoCache(env, prettier, filepath, options);
   caches.configCache.set(filepath, config);
   return config;
 }
@@ -192,7 +177,7 @@ export type ResolvedPrettier = {
 };
 
 async function resolvePrettier(
-  clientEnv: ClientEnv,
+  env: EnvMap,
   filePath: string
 ): Promise<ResolvedPrettier | undefined> {
   const cachedValue = caches.importCache.get<
@@ -217,10 +202,7 @@ async function resolvePrettier(
   try {
     path = require.resolve("prettier", { paths: [filePath] });
   } catch (e) {
-    if (
-      process.env.PRETTIERD_LOCAL_PRETTIER_ONLY ||
-      clientEnv.PRETTIERD_LOCAL_PRETTIER_ONLY
-    ) {
+    if (env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
       caches.importCache.set(filePath, false);
       return undefined;
     }
@@ -305,7 +287,7 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
 
 type InvokeArgs = {
   args: string[];
-  clientEnv: ClientEnv;
+  clientEnv: EnvMap;
 };
 
 async function run(
@@ -318,11 +300,9 @@ async function run(
     fileName,
     { config, configPrecedence, editorconfig, ...cliOptions },
   ] = parseCLIArguments(args);
+  const env = { ...process.env, ...clientEnv };
   const fullPath = resolveFile(cwd, fileName);
-  const resolvedPrettier = await resolvePrettier(
-    clientEnv,
-    path.dirname(fullPath)
-  );
+  const resolvedPrettier = await resolvePrettier(env, path.dirname(fullPath));
   if (!resolvedPrettier) {
     return text;
   }
@@ -333,7 +313,7 @@ async function run(
     return text;
   }
 
-  const fileOptions = await resolveConfig(clientEnv, prettier, fullPath, {
+  const fileOptions = await resolveConfig(env, prettier, fullPath, {
     config,
     editorconfig,
   });
@@ -348,7 +328,7 @@ async function run(
   return prettier.format(text, {
     ...options,
     filepath: fullPath,
-    pluginSearchDirs: await pluginSearchDirs(cwd, clientEnv),
+    pluginSearchDirs: await pluginSearchDirs(cwd, env),
   });
 }
 
