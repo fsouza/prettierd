@@ -83,7 +83,10 @@ async function main(args: string[]): Promise<void> {
     return;
   }
 
-  core_d.invoke(args, await readFile(process.stdin.fd, { encoding: "utf-8" }));
+  core_d.invoke(
+    { args, clientEnv: process.env },
+    await readFile(process.stdin.fd, { encoding: "utf-8" })
+  );
 }
 
 main(process.argv.slice(2)).catch((err) => {
