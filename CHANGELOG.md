@@ -1,5 +1,11 @@
 # prettierd
 
+## v0.22.1
+
+### New features
+
+- Support injecting environment variables from the client
+
 ## v0.22.0
 
 ### New features
