@@ -84,7 +84,15 @@ async function main(args: string[]): Promise<void> {
   }
 
   core_d.invoke(
-    { args, clientEnv: process.env },
+    {
+      args,
+      clientEnv: Object.keys(process.env)
+        .filter((key) => key.startsWith("PRETTIERD_"))
+        .reduce(
+          (acc, key) => Object.assign(acc, { [key]: process.env[key] }),
+          {}
+        ),
+    },
     await readFile(process.stdin.fd, { encoding: "utf-8" })
   );
 }
