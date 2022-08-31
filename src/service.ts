@@ -1,5 +1,3 @@
-process.env.FORCE_COLOR = "0";
-
 import LRU from "nanolru";
 import { dirname } from "path";
 import path from "path";
