@@ -1,5 +1,11 @@
 # prettierd
 
+## v0.22.2
+
+### Fixed
+
+- Properly disable colors in the integration with core_d
+
 ## v0.22.1
 
 ### New features
