@@ -52,5 +52,11 @@ jobs:
           version=$(echo "${tarball_url}" | sd '^.+/-/prettierd-(.+)\.tgz$' '$1')
           sd 'url ".+"' 'url "'${tarball_url}'"' Formula/prettierd.rb
           sd 'sha256 ".+"' 'sha256 "'${checksum}'"' Formula/prettierd.rb
+
+      - name: test formula
+        run: brew install ./Formula/prettierd.rb
+
+      - name: commit and push
+        run: |
           git commit -m "prettierd v${version}" Formula/prettierd.rb
           git push origin main
