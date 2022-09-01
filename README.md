@@ -29,6 +29,12 @@ $ npm install -g @fsouza/prettierd
 
 **NOTE**: `npm` comes builtin to [`node`](https://nodejs.org).
 
+Alternatively, users may also use homebrew:
+
+```
+$ brew install fsouza/prettierd/prettierd
+```
+
 ## Using in the command line with node.js
 
 The prettierd script always takes the file in the standard input and the
