@@ -12,7 +12,7 @@ jobs:
 
       - uses: actions/setup-node@v3.4.1
         with:
-          node-version: "14.x"
+          node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
           scope: "@fsouza"
 
@@ -21,3 +21,36 @@ jobs:
       - run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  update-brew-formula:
+    name: update-brew-formula
+    runs-on: macos-latest
+    needs:
+      - release
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+          repository: fsouza/homebrew-prettierd
+          token: ${{ secrets.GH_TOKEN_BREW_TAP }}
+
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: "18.x"
+
+      - run: brew install sd
+
+      - name: set git config
+        run: |
+          git config user.name fsouzabot
+          git config user.email 'fsouzabot@users.noreply.github.com'
+
+      - name: update formula file, commit and push
+        run: |
+          tarball_url=$(npm view @fsouza/prettierd dist.tarball)
+          checksum=$(curl -sL "${tarball_url}" | shasum -a 256 - | awk '{print $1}')
+          version=$(echo "${tarball_url}" | sd '^.+/-/prettierd-(.+)\.tgz$' '$1')
+          sd 'url ".+"' 'url "'${tarball_url}'"' Formula/prettierd.rb
+          sd 'sha256 ".+"' 'sha256 "'${checksum}'"' Formula/prettierd.rb
+          git commit -m "prettierd v${version}" Formula/prettierd.rb
+          git push origin main
