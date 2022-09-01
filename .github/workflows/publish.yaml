@@ -54,7 +54,9 @@ jobs:
           sd 'sha256 ".+"' 'sha256 "'${checksum}'"' Formula/prettierd.rb
 
       - name: test formula
-        run: brew install ./Formula/prettierd.rb
+        run: |
+          brew install --include-test ./Formula/prettierd.rb
+          brew test ./Formula/prettierd.rb
 
       - name: commit and push
         run: |
