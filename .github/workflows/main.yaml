@@ -36,3 +36,33 @@ jobs:
       - run: yarn build
 
       - run: yarn start
+
+  cram-tests:
+    strategy:
+      matrix:
+        os:
+          - ubuntu
+          - macos
+
+    needs:
+      - bootstrap
+    name: cram-tests
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: "18.x"
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn build
+
+      - uses: actions/setup-python@v4.2.0
+        with:
+          python-version: "3.10.x"
+
+      - run: pip install cram
+
+      - run: cram tests
