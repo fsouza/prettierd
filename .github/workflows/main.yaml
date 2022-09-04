@@ -43,6 +43,7 @@ jobs:
         os:
           - ubuntu
           - macos
+          - windows
 
     needs:
       - bootstrap
