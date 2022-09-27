@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
 
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.0
         with:
           node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
@@ -34,7 +34,7 @@ jobs:
           repository: fsouza/homebrew-prettierd
           token: ${{ secrets.GH_TOKEN_BREW_TAP }}
 
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.0
         with:
           node-version: "18.x"
 
