@@ -139,7 +139,7 @@ async function resolveConfigNoCache(
     config = await tryToResolveConfigFromEnvironmentValue(
       prettier,
       editorconfig,
-      env.PRETTIERD_LOCAL_PRETTIER_ONLY
+      env.PRETTIERD_DEFAULT_CONFIG
     );
   }
 
