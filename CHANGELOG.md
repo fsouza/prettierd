@@ -1,5 +1,12 @@
 # prettierd
 
+## v0.22.3
+
+### Fixed
+
+- Fix regression in usage of `PRETTIERD_DEFAULT_CONFIG` (regression was
+  introduced in 0.22.1).
+
 ## v0.22.2
 
 ### Fixed
