@@ -53,7 +53,7 @@ jobs:
           sd 'url ".+"' 'url "'${tarball_url}'"' Formula/prettierd.rb
           sd 'sha256 ".+"' 'sha256 "'${checksum}'"' Formula/prettierd.rb
           version=$(echo "${tarball_url}" | sd '^.+/-/prettierd-(.+)\.tgz$' '$1')
-          echo "::set-output name=version::${version}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
 
       - name: test formula
         run: |
