@@ -50,7 +50,7 @@ function argsToOptions(args: string[]) {
     } else if (/^\d+$/.test(value)) {
       value = Number(value);
     } else if (/^(true|false)$/.test(value)) {
-      value = (value === "true");
+      value = value === "true";
     }
 
     options[toCamelcase(key)] = value;
