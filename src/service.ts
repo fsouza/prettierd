@@ -49,6 +49,8 @@ function argsToOptions(args: string[]) {
       }
     } else if (/^\d+$/.test(value)) {
       value = Number(value);
+    } else if (/^(true|false)$/.test(value)) {
+      value = Boolean(value);
     }
 
     options[toCamelcase(key)] = value;
