@@ -40,8 +40,8 @@ function argsToOptions(args: string[]) {
   };
 
   for (const arg of args) {
-    let [key, ...valueParts] = arg.replace(/^-+/, "").split("=");
-    let value: boolean | number | string = valueParts.join("=");
+    let [key, rawValue] = arg.replace(/^-+/, "").split("=", 2);
+    let value: boolean | number | string = rawValue;
     if (!value.length) {
       value = !key.startsWith("no-");
       if (!value) {
