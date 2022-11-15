@@ -57,7 +57,7 @@ jobs:
 
       - name: test formula
         run: |
-          brew install --include-test ./Formula/prettierd.rb
+          brew install --formulae --include-test ./Formula/prettierd.rb
           brew test ./Formula/prettierd.rb
 
       - name: commit and push
