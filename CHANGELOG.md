@@ -1,5 +1,13 @@
 # prettierd
 
+## v0.22.4
+
+### Fixed
+
+- Support casting of bool type arguments to options (thanks @mkdynamic)
+- Improve cache handling for config values in the presence of
+  `PRETTIERD_LOCAL_PRETTIER_ONLY`
+
 ## v0.22.3
 
 ### Fixed
