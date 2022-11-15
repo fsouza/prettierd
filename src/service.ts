@@ -180,10 +180,11 @@ async function resolvePrettier(
   env: EnvMap,
   filePath: string
 ): Promise<ResolvedPrettier | undefined> {
+  const cacheKey = `${filePath}#${env.PRETTIERD_LOCAL_PRETTIER_ONLY}`;
   const cachedValue = caches.importCache.get<
     string,
     [typeof Prettier, string] | false
-  >(filePath);
+  >(cacheKey);
 
   if (cachedValue) {
     const [module, filePath] = cachedValue;
@@ -203,7 +204,7 @@ async function resolvePrettier(
     path = require.resolve("prettier", { paths: [filePath] });
   } catch (e) {
     if (env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
-      caches.importCache.set(filePath, false);
+      caches.importCache.set(cacheKey, false);
       return undefined;
     }
     path = require.resolve("prettier");
@@ -211,14 +212,14 @@ async function resolvePrettier(
 
   return import(path).then((v) => {
     if (v !== undefined) {
-      caches.importCache.set(filePath, [v, path]);
+      caches.importCache.set(cacheKey, [v, path]);
       return {
         module: v,
         filePath: path,
         cacheHit: false,
       };
     }
-    caches.importCache.set(filePath, false);
+    caches.importCache.set(cacheKey, false);
     return undefined;
   });
 }
