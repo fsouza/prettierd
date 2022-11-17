@@ -38,5 +38,9 @@
     "dist",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "optionalDependencies": {
+    "@babel/parser": "^7.20.3",
+    "@typescript-eslint/typescript-estree": "^5.43.0"
+  }
 }
