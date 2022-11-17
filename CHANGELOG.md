@@ -1,5 +1,12 @@
 # prettierd
 
+## v0.22.5
+
+### Fixed
+
+- Include parsers for typescript and css to make sure brew formula is more
+  usable out of the box
+
 ## v0.22.4
 
 ### Fixed
