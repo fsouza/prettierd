@@ -7,7 +7,6 @@
 
 - [Installation guide](#installation-guide)
 - [Using in the command line with node.js](#using-in-the-command-line-with-nodejs)
-- [Using with TCP (moar speed)](#using-with-tcp-moar-speed)
 - [Supported languages / plugins](#supported-languages--plugins)
 - [Additional plugins](#additional-plugins)
 - [Provide Default Configuration](#provide-default-configuration)
@@ -42,16 +41,6 @@ positional parameter with the name of the file:
 
 ```
 $ cat file.ts | prettierd file.ts
-```
-
-## Using with TCP (moar speed)
-
-Following the instructions from https://github.com/mantoni/core_d.js#moar-speed:
-
-```
-$ PORT=`cat ~/.prettierd | cut -d" " -f1`
-$ TOKEN=`cat ~/.prettierd | cut -d" " -f2`
-$ echo "$TOKEN $PWD file.ts" | cat - file.ts | nc localhost $PORT
 ```
 
 ## Supported languages / plugins
@@ -108,11 +97,6 @@ local prettier = {
   },
 }
 ```
-
-The native TCP client can be used too, I used to do it migrated to
-efm-langserver for simplicity, see more details in this [blog
-post](https://blog.fsouza.dev/prettierd-neovim-format-on-save/) or my
-[configuration](https://github.com/fsouza/dotfiles/blob/2ad8a83bf40a3bc43931cd71b53b171a109f76bc/nvim/lua/fsouza/plugin/prettierd.lua).
 
 Alternatively, one can use
 [prettierme](https://github.com/ruyadorno/prettierme) to integrate directly
