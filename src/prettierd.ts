@@ -74,7 +74,7 @@ async function main(args: string[]): Promise<void> {
 
   process.env.CORE_D_TITLE = title;
   process.env.CORE_D_SERVICE = require.resolve("./service");
-  process.env.CORE_D_DOTFILE = `.${title}`;
+  process.env.CORE_D_DOTFILE = `.${title}@${encodeURIComponent(process.cwd())}`;
 
   const core_d = require("core_d");
 
