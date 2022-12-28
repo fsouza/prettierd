@@ -1,5 +1,12 @@
 # prettierd
 
+## v0.23.1
+
+## Fixed
+
+- fixed how CLI options are combined with the config file (and how priority is
+  handled)
+
 ## v0.23.0
 
 ### New features
