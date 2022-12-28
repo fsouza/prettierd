@@ -320,11 +320,9 @@ async function run(
   });
 
   const options: Record<string, unknown> =
-    configPrecedence === "cli-override"
-      ? { ...fileOptions, ...cliOptions }
-      : configPrecedence === "file-override"
+    configPrecedence === "file-override" || configPrecedence === "prefer-file"
       ? { ...cliOptions, ...fileOptions }
-      : fileOptions || cliOptions;
+      : { ...fileOptions, ...cliOptions };
 
   return prettier.format(text, {
     ...options,
