@@ -1,5 +1,18 @@
 # prettierd
 
+## v0.23.0
+
+### New features
+
+- prettierd will now start one daemon per working dir, making sure that it can
+  load manually configured plugins
+
+### Updated dependencies
+
+- `@babel/parser` upgraded to `^7.20.7`
+- `prettier` upgraded to `^2.8.1`
+- `@typescript-eslint/typescript-estree` upgraded to `^5.47.1`
+
 ## v0.22.5
 
 ### Fixed
