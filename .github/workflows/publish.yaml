@@ -34,10 +34,6 @@ jobs:
           repository: fsouza/homebrew-prettierd
           token: ${{ secrets.GH_TOKEN_BREW_TAP }}
 
-      - uses: actions/setup-node@v3.5.1
-        with:
-          node-version: "18.x"
-
       - run: brew install sd
 
       - name: set git config
