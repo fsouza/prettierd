@@ -53,8 +53,10 @@ function printDebugInfo(debugInfo: DebugInfo): void {
 }
 
 function getRuntimeDir(): string {
-  if (!process.env.XDG_RUNTIME_DIR && process.env.HOME) {
-    return path.join(process.env.HOME, ".prettierd");
+  const homeEnv = process.platform === "win32" ? "USERPROFILE" : "HOME";
+  const home = process.env[homeEnv];
+  if (!process.env.XDG_RUNTIME_DIR && home) {
+    return path.join(home, ".prettierd");
   }
 
   if (process.env.XDG_RUNTIME_DIR) {
@@ -64,7 +66,7 @@ function getRuntimeDir(): string {
   }
 
   throw new Error(
-    "failed to run prettierd: couldn't determine the runtime dir, make sure $HOME or $XDG_RUNTIME_DIR are set"
+    "failed to run prettierd: couldn't determine the runtime dir, make sure HOME or XDG_RUNTIME_DIR are set"
   );
 }
 
