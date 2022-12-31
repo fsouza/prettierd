@@ -1,5 +1,14 @@
 # prettierd
 
+## v0.23.2
+
+## Fixed
+
+- avoid polluting the user home directory with runtime files (move them to
+  `$HOME/.prettierd` if XDG_RUNTIME_DIR is not defined)
+- fix bug where prettierd would hang if the data dir isn't writable (now it
+  displays an error to the user)
+
 ## v0.23.1
 
 ## Fixed
