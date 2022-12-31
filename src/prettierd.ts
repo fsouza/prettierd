@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { promisify } from "util";
 
 // @ts-ignore
@@ -6,6 +7,7 @@ import { version } from "../package.json";
 import { displayHelp } from "./args";
 import { DebugInfo, flushCache, getDebugInfo } from "./service";
 
+const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
 const validCommands = ["restart", "start", "status", "stop"];
 
@@ -49,6 +51,20 @@ function printDebugInfo(debugInfo: DebugInfo): void {
   });
 }
 
+function getRuntimeDir(): string | undefined {
+  if (!process.env.XDG_RUNTIME_DIR && process.env.HOME) {
+    return path.join(process.env.HOME, ".prettierd");
+  }
+
+  if (process.env.XDG_RUNTIME_DIR) {
+    return path.basename(process.env.XDG_RUNTIME_DIR) === "prettierd"
+      ? process.env.XDG_RUNTIME_DIR
+      : path.join(process.env.XDG_RUNTIME_DIR, "prettierd");
+  }
+
+  return undefined;
+}
+
 async function main(args: string[]): Promise<void> {
   const [action, cmdOrFilename] = processArgs(args);
 
@@ -71,6 +87,11 @@ async function main(args: string[]): Promise<void> {
   }
 
   const title = "prettierd";
+  const runtimeDir = getRuntimeDir();
+  if (runtimeDir) {
+    await mkdir(runtimeDir, { recursive: true });
+    process.env.XDG_RUNTIME_DIR = runtimeDir;
+  }
 
   process.env.CORE_D_TITLE = title;
   process.env.CORE_D_SERVICE = require.resolve("./service");
