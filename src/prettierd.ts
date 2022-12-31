@@ -1,4 +1,5 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { promisify } from "util";
 
@@ -53,21 +54,12 @@ function printDebugInfo(debugInfo: DebugInfo): void {
 }
 
 function getRuntimeDir(): string {
-  const homeEnv = process.platform === "win32" ? "USERPROFILE" : "HOME";
-  const home = process.env[homeEnv];
-  if (!process.env.XDG_RUNTIME_DIR && home) {
-    return path.join(home, ".prettierd");
-  }
+  const baseDir = process.env.XDG_RUNTIME_DIR ?? os.homedir();
+  const basename = path.basename(baseDir);
 
-  if (process.env.XDG_RUNTIME_DIR) {
-    return path.basename(process.env.XDG_RUNTIME_DIR) === "prettierd"
-      ? process.env.XDG_RUNTIME_DIR
-      : path.join(process.env.XDG_RUNTIME_DIR, "prettierd");
-  }
-
-  throw new Error(
-    "failed to run prettierd: couldn't determine the runtime dir, make sure HOME or XDG_RUNTIME_DIR are set"
-  );
+  return basename === "prettierd" || basename === ".prettierd"
+    ? baseDir
+    : path.join(baseDir, ".prettierd");
 }
 
 async function verifyRuntimeDir(dir: string): Promise<void> {
