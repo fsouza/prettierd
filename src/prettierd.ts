@@ -7,6 +7,7 @@ import { version } from "../package.json";
 import { displayHelp } from "./args";
 import { DebugInfo, flushCache, getDebugInfo } from "./service";
 
+const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
 const validCommands = ["restart", "start", "status", "stop"];
@@ -51,7 +52,7 @@ function printDebugInfo(debugInfo: DebugInfo): void {
   });
 }
 
-function getRuntimeDir(): string | undefined {
+function getRuntimeDir(): string {
   if (!process.env.XDG_RUNTIME_DIR && process.env.HOME) {
     return path.join(process.env.HOME, ".prettierd");
   }
@@ -62,7 +63,20 @@ function getRuntimeDir(): string | undefined {
       : path.join(process.env.XDG_RUNTIME_DIR, "prettierd");
   }
 
-  return undefined;
+  throw new Error(
+    "failed to run prettierd: couldn't determine the runtime dir, make sure $HOME or $XDG_RUNTIME_DIR are set"
+  );
+}
+
+async function verifyRuntimeDir(dir: string): Promise<void> {
+  try {
+    await mkdir(dir, { recursive: true });
+    await access(dir, fs.constants.W_OK);
+  } catch (e) {
+    throw new Error(
+      `failed to start prettierd, make sure ${dir} is writable ${e}`
+    );
+  }
 }
 
 async function main(args: string[]): Promise<void> {
@@ -88,10 +102,8 @@ async function main(args: string[]): Promise<void> {
 
   const title = "prettierd";
   const runtimeDir = getRuntimeDir();
-  if (runtimeDir) {
-    await mkdir(runtimeDir, { recursive: true });
-    process.env.XDG_RUNTIME_DIR = runtimeDir;
-  }
+  await verifyRuntimeDir(runtimeDir);
+  process.env.XDG_RUNTIME_DIR = runtimeDir;
 
   process.env.CORE_D_TITLE = title;
   process.env.CORE_D_SERVICE = require.resolve("./service");
