@@ -41,7 +41,7 @@ function argsToOptions(args: string[]) {
 
   for (const arg of args) {
     let [key, rawValue] = arg.replace(/^-+/, "").split("=", 2);
-    let value: boolean | number | string = rawValue;
+    let value: boolean | number | string = rawValue ?? "";
     if (!value.length) {
       value = !key.startsWith("no-");
       if (!value) {
