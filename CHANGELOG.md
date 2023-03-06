@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.23.3
+
+## Fixed
+
+- fix a bug in argument parsing introduced by a poorly tested refactor
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.8.4`
+- `@babel/parser` upgraded to `^7.21.2`
+- `@typescript-eslint/typescript-estree` upgraded to `^5.54.0`
+
 ## v0.23.2
 
 ## Fixed
