@@ -40,7 +40,7 @@
     "README.md"
   ],
   "optionalDependencies": {
-    "@babel/parser": "^7.21.3",
+    "@babel/parser": "^7.21.4",
     "@typescript-eslint/typescript-estree": "^5.57.0"
   }
 }
