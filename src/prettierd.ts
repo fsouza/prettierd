@@ -1,15 +1,14 @@
-import fs from "fs";
-import os from "os";
-import path from "path";
-import { promisify } from "util";
+import { access, mkdir } from "node:fs/promises";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { promisify } from "node:util";
 
 // @ts-ignore
 import { version } from "../package.json";
 import { displayHelp } from "./args";
 import { DebugInfo, flushCache, getDebugInfo, stopAll } from "./service";
 
-const access = promisify(fs.access);
-const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
 const coredCommands = ["restart", "start", "status"];
 

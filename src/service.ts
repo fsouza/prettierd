@@ -1,9 +1,8 @@
 import LRU from "nanolru";
-import { dirname } from "path";
-import path from "path";
+import path from "node:path";
 import type Prettier from "prettier";
-import { promisify } from "util";
-import fs from "fs";
+import { promisify } from "node:util";
+import { stat, readdir } from "node:fs/promises";
 
 type CliOptions = {
   [key: string]: boolean | number | string | undefined;
@@ -11,9 +10,6 @@ type CliOptions = {
   configPrecedence: "cli-override" | "file-override" | "prefer-file";
   editorconfig?: boolean;
 };
-
-const stat = promisify(fs.stat);
-const readdir = promisify(fs.readdir);
 
 const cacheParams = { max: 500, maxAge: 60000 };
 
@@ -118,7 +114,7 @@ async function tryToResolveConfigFromEnvironmentValue(
   value: string | undefined
 ): Promise<Prettier.Options | null> {
   if (value) {
-    return await prettier.resolveConfig(dirname(value), {
+    return await prettier.resolveConfig(path.dirname(value), {
       config: value,
       editorconfig,
       useCache: false,
