@@ -13,6 +13,7 @@ type CliOptions = {
 };
 
 const stat = promisify(fs.stat);
+const readdir = promisify(fs.readdir);
 
 const cacheParams = { max: 500, maxAge: 60000 };
 
@@ -362,6 +363,36 @@ export async function getDebugInfo(
 export function flushCache(): void {
   for (const cacheName in caches) {
     caches[cacheName].clear();
+  }
+}
+
+export async function stopAll(
+  runtimeDir: string,
+  prefix: string
+): Promise<void> {
+  const files = await readdir(runtimeDir);
+  const coredFiles = files.filter((file) => file.startsWith(prefix));
+
+  // this is horrible
+  for (const file of coredFiles) {
+    process.env.CORE_D_DOTFILE = file;
+
+    const core_d = require("core_d");
+    const stop = promisify(core_d.stop);
+    await stop();
+
+    // core_d will cache the value of CORE_D_DOTFILE, so we have to clear the
+    // cache.
+    //
+    // Alternatively, we could read the file and submit the stop command over
+    // TCP, but let's keep this horrible approach for now.
+    for (const key of Object.keys(require.cache)) {
+      if (key.includes("/core_d/")) {
+        delete require.cache[key];
+      }
+    }
+
+    console.log(`stopped ${file}`);
   }
 }
 

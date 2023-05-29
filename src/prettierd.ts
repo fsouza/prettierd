@@ -6,19 +6,20 @@ import { promisify } from "util";
 // @ts-ignore
 import { version } from "../package.json";
 import { displayHelp } from "./args";
-import { DebugInfo, flushCache, getDebugInfo } from "./service";
+import { DebugInfo, flushCache, getDebugInfo, stopAll } from "./service";
 
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
-const validCommands = ["restart", "start", "status", "stop"];
+const coredCommands = ["restart", "start", "status"];
 
 type Action =
   | "PRINT_VERSION"
   | "INVOKE_CORE_D"
   | "PRINT_HELP"
   | "PRINT_DEBUG_INFO"
-  | "FLUSH_CACHE";
+  | "FLUSH_CACHE"
+  | "STOP";
 
 function processArgs(args: string[]): [Action, string] {
   const flagsToAction: { [flag: string]: Action | undefined } = {
@@ -26,6 +27,7 @@ function processArgs(args: string[]): [Action, string] {
     "--help": "PRINT_HELP",
     "flush-cache": "FLUSH_CACHE",
     "--debug-info": "PRINT_DEBUG_INFO",
+    stop: "STOP",
   };
 
   for (const arg of args) {
@@ -103,11 +105,24 @@ async function main(args: string[]): Promise<void> {
   process.env.CORE_D_SERVICE = require.resolve("./service");
   process.env.CORE_D_DOTFILE = `.${title}@${encodeURIComponent(process.cwd())}`;
 
+  if (action === "STOP") {
+    await stopAll(runtimeDir, `.${title}`);
+    return;
+  }
+
   const core_d = require("core_d");
 
-  if (validCommands.includes(cmdOrFilename)) {
+  if (coredCommands.includes(cmdOrFilename)) {
     core_d[cmdOrFilename]();
     return;
+  }
+
+  if (cmdOrFilename === "stop-local") {
+    core_d.stop();
+    return;
+  }
+
+  if (cmdOrFilename === "stop") {
   }
 
   core_d.invoke(
