@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.23.4
+
+## Fixed
+
+- make `prettierd stop` stop all instances of prettierd
+
+### Updated dependencies
+
+- `prettier` upgraded to `^2.8.8`
+- `@babel/parser` upgraded to `^7.22.3`
+- `@typescript-eslint/typescript-estree` upgraded to `^5.59.7`
+
 ## v0.23.3
 
 ## Fixed
