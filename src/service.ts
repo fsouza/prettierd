@@ -317,7 +317,9 @@ async function run(
   });
 
   const options: Record<string, unknown> =
-    configPrecedence === "file-override" || configPrecedence === "prefer-file"
+    configPrecedence === "prefer-file" && fileOptions !== null
+      ? fileOptions
+      : configPrecedence === "file-override"
       ? { ...cliOptions, ...fileOptions }
       : { ...fileOptions, ...cliOptions };
 
