@@ -1,4 +1,3 @@
-import LRU from "nanolru";
 import path from "node:path";
 import type Prettier from "prettier";
 import { promisify } from "node:util";
@@ -9,14 +8,6 @@ type CliOptions = {
   config?: false | string;
   configPrecedence: "cli-override" | "file-override" | "prefer-file";
   editorconfig?: boolean;
-};
-
-const cacheParams = { max: 500, maxAge: 60000 };
-
-const caches: { [name: string]: LRU } = {
-  configCache: new LRU(cacheParams),
-  importCache: new LRU(cacheParams),
-  parentCache: new LRU(cacheParams),
 };
 
 async function isDir(path: string): Promise<boolean> {
@@ -60,27 +51,14 @@ async function findParent(
   start: string,
   search: string
 ): Promise<string | undefined> {
-  const cacheKey = `${start}|${search}`;
-  const cachedValue = caches.parentCache.get<string, string | false>(cacheKey);
-
-  if (cachedValue === false) {
-    return undefined;
-  }
-
-  if (cachedValue !== null) {
-    return cachedValue;
-  }
-
   const parent = path.join(start, "..");
   if (parent === start) {
-    caches.parentCache.set(cacheKey, false);
     return undefined;
   }
 
   try {
     const candidate = path.join(parent, search);
     if (await isDir(candidate)) {
-      caches.parentCache.set(cacheKey, candidate);
       return candidate;
     }
   } catch (e) {}
@@ -123,28 +101,6 @@ async function tryToResolveConfigFromEnvironmentValue(
   return null;
 }
 
-async function resolveConfigNoCache(
-  env: EnvMap,
-  prettier: typeof Prettier,
-  filepath: string,
-  { editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
-): Promise<Prettier.Options | null> {
-  let config = await prettier.resolveConfig(filepath, {
-    editorconfig,
-    useCache: false,
-  });
-
-  if (!config) {
-    config = await tryToResolveConfigFromEnvironmentValue(
-      prettier,
-      editorconfig,
-      env.PRETTIERD_DEFAULT_CONFIG
-    );
-  }
-
-  return config;
-}
-
 async function resolveConfig(
   env: EnvMap,
   prettier: typeof Prettier,
@@ -155,53 +111,36 @@ async function resolveConfig(
     return null;
   }
 
-  const cachedValue = caches.configCache.get<string, Prettier.Options | null>(
-    filepath
-  );
-  if (cachedValue || cachedValue === null) {
-    return cachedValue;
+  let config = await prettier.resolveConfig(filepath, {
+    editorconfig: options.editorconfig,
+    useCache: false,
+  });
+
+  if (!config) {
+    config = await tryToResolveConfigFromEnvironmentValue(
+      prettier,
+      options.editorconfig ?? false,
+      env.PRETTIERD_DEFAULT_CONFIG
+    );
   }
 
-  const config = await resolveConfigNoCache(env, prettier, filepath, options);
-  caches.configCache.set(filepath, config);
   return config;
 }
 
 export type ResolvedPrettier = {
   module: typeof Prettier;
   filePath: string;
-  cacheHit: boolean;
 };
 
 async function resolvePrettier(
   env: EnvMap,
   filePath: string
 ): Promise<ResolvedPrettier | undefined> {
-  const cacheKey = `${filePath}#${env.PRETTIERD_LOCAL_PRETTIER_ONLY}`;
-  const cachedValue = caches.importCache.get<
-    string,
-    [typeof Prettier, string] | false
-  >(cacheKey);
-
-  if (cachedValue) {
-    const [module, filePath] = cachedValue;
-    return {
-      module,
-      filePath,
-      cacheHit: true,
-    };
-  }
-
-  if (cachedValue === false) {
-    return undefined;
-  }
-
   let path: string;
   try {
     path = require.resolve("prettier", { paths: [filePath] });
   } catch (e) {
     if (env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
-      caches.importCache.set(cacheKey, false);
       return undefined;
     }
     path = require.resolve("prettier");
@@ -209,14 +148,11 @@ async function resolvePrettier(
 
   return import(path).then((v) => {
     if (v !== undefined) {
-      caches.importCache.set(cacheKey, [v, path]);
       return {
         module: v,
         filePath: path,
-        cacheHit: false,
       };
     }
-    caches.importCache.set(cacheKey, false);
     return undefined;
   });
 }
@@ -330,15 +266,8 @@ async function run(
   });
 }
 
-export type CacheInfo = {
-  name: string;
-  length: number;
-  keys: string[];
-};
-
 export type DebugInfo = {
   resolvedPrettier?: ResolvedPrettier;
-  cacheInfo: CacheInfo[];
 };
 
 export async function getDebugInfo(
@@ -349,19 +278,8 @@ export async function getDebugInfo(
   const fullPath = resolveFile(cwd, fileName);
 
   const resolvedPrettier = await resolvePrettier(process.env, fullPath);
-  const cacheInfo = Object.keys(caches).map((cacheName) => ({
-    name: cacheName,
-    length: caches[cacheName].length,
-    keys: caches[cacheName].keys,
-  }));
 
-  return { resolvedPrettier, cacheInfo };
-}
-
-export function flushCache(): void {
-  for (const cacheName in caches) {
-    caches[cacheName].clear();
-  }
+  return { resolvedPrettier };
 }
 
 export async function stopAll(

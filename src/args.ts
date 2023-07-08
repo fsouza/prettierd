@@ -30,11 +30,7 @@ const commands: Command[] = [
   {
     command: "--debug-info <path>",
     description:
-      "Print debugging information (current cache status and automatically discovered version of prettier for the provided file path, for example `prettierd --debug-info src/my-file.js`).",
-  },
-  {
-    command: "flush-cache\t",
-    description: "Flush the cache.",
+      "Print debugging information (information about the version of prettier being used for the provided path, for example `prettierd --debug-info src/my-file.js`).",
   },
   {
     command: "start\t\t",

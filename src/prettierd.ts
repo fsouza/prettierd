@@ -7,7 +7,7 @@ import { promisify } from "node:util";
 // @ts-ignore
 import { version } from "../package.json";
 import { displayHelp } from "./args";
-import { DebugInfo, flushCache, getDebugInfo, stopAll } from "./service";
+import { DebugInfo, getDebugInfo, stopAll } from "./service";
 
 const readFile = promisify(fs.readFile);
 const coredCommands = ["restart", "start", "status"];
@@ -17,14 +17,12 @@ type Action =
   | "INVOKE_CORE_D"
   | "PRINT_HELP"
   | "PRINT_DEBUG_INFO"
-  | "FLUSH_CACHE"
   | "STOP";
 
 function processArgs(args: string[]): [Action, string] {
   const flagsToAction: { [flag: string]: Action | undefined } = {
     "--version": "PRINT_VERSION",
     "--help": "PRINT_HELP",
-    "flush-cache": "FLUSH_CACHE",
     "--debug-info": "PRINT_DEBUG_INFO",
     stop: "STOP",
   };
@@ -43,15 +41,9 @@ function printDebugInfo(debugInfo: DebugInfo): void {
   if (debugInfo.resolvedPrettier) {
     console.log(
       `prettier version: ${debugInfo.resolvedPrettier.module.version}
-  Loaded from: ${debugInfo.resolvedPrettier.filePath}
-  Cache: ${debugInfo.resolvedPrettier.cacheHit ? "hit" : "miss"}\n`
+  Loaded from: ${debugInfo.resolvedPrettier.filePath}\n`
     );
   }
-
-  console.log("Cache information:");
-  debugInfo.cacheInfo.forEach((cacheInfo) => {
-    console.log(`- "${cacheInfo.name}" contains ${cacheInfo.length} items`);
-  });
 }
 
 function getRuntimeDir(): string {
@@ -88,10 +80,6 @@ async function main(args: string[]): Promise<void> {
       console.log(`prettierd ${version}`);
       const debugInfo = await getDebugInfo(process.cwd(), args.slice(1));
       printDebugInfo(debugInfo);
-      return;
-    case "FLUSH_CACHE":
-      flushCache();
-      console.log("success");
       return;
   }
 

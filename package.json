@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "core_d": "^5.0.1",
-    "nanolru": "^1.0.0",
     "prettier": "^2.8.8"
   },
   "files": [
