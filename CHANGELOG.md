@@ -1,8 +1,22 @@
 # prettierd
 
+## v0.24.0
+
+### Fixed
+
+- Fix the behavior of `--config-precedence prefer-file`
+- Remove caching from the tool. This should fix many bugs caused by
+  inconsistencies in the cache. If this causes a big hit to performance, we'll
+  reintroduce caches according to their necessity.
+
+### Updated dependencies
+
+- `@babel/parser` upgraded to `^7.22.7`
+- `@typescript-eslint/typescript-estree` upgraded to `^5.61.0`
+
 ## v0.23.4
 
-## Fixed
+### Fixed
 
 - make `prettierd stop` stop all instances of prettierd
 
@@ -14,7 +28,7 @@
 
 ## v0.23.3
 
-## Fixed
+### Fixed
 
 - fix a bug in argument parsing introduced by a poorly tested refactor
 
@@ -26,7 +40,7 @@
 
 ## v0.23.2
 
-## Fixed
+### Fixed
 
 - avoid polluting the user home directory with runtime files (move them to
   `$HOME/.prettierd` if XDG_RUNTIME_DIR is not defined)
@@ -35,7 +49,7 @@
 
 ## v0.23.1
 
-## Fixed
+### Fixed
 
 - fixed how CLI options are combined with the config file (and how priority is
   handled)
