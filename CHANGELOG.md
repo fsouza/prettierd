@@ -1,5 +1,11 @@
 # prettierd
 
+## v0.24.2
+
+### Fixed
+
+- Properly fix `editorconfig` and custom configuration
+
 ## v0.24.1
 
 ### Fixed
