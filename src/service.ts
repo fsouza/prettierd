@@ -105,26 +105,26 @@ async function resolveConfig(
   env: EnvMap,
   prettier: typeof Prettier,
   filepath: string,
-  options: Pick<CliOptions, "config" | "editorconfig">
+  { config, editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
 ): Promise<Prettier.Options | null> {
-  if (options.config === false) {
+  if (config === false) {
     return null;
   }
 
-  let config = await prettier.resolveConfig(filepath, {
-    editorconfig: options.editorconfig,
+  let prettierConfig = await prettier.resolveConfig(filepath, {
+    editorconfig: editorconfig,
     useCache: false,
   });
 
   if (!config) {
-    config = await tryToResolveConfigFromEnvironmentValue(
+    prettierConfig = await tryToResolveConfigFromEnvironmentValue(
       prettier,
-      options.editorconfig ?? false,
+      editorconfig,
       env.PRETTIERD_DEFAULT_CONFIG
     );
   }
 
-  return config;
+  return prettierConfig;
 }
 
 export type ResolvedPrettier = {
