@@ -112,11 +112,11 @@ async function resolveConfig(
   }
 
   let prettierConfig = await prettier.resolveConfig(filepath, {
-    editorconfig: editorconfig,
+    editorconfig,
     useCache: false,
   });
 
-  if (!config) {
+  if (!prettierConfig) {
     prettierConfig = await tryToResolveConfigFromEnvironmentValue(
       prettier,
       editorconfig,
