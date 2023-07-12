@@ -1,5 +1,15 @@
 # prettierd
 
+## v0.24.1
+
+### Fixed
+
+- Fix the default value of `editorconfig`
+
+### Updated dependencies
+
+- `@typescript-eslint/typescript-estree` upgraded to `^6.0.0`
+
 ## v0.24.0
 
 ### Fixed
