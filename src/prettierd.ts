@@ -48,10 +48,9 @@ function printDebugInfo(debugInfo: DebugInfo): void {
 
 function getRuntimeDir(): string {
   const baseDir = process.env.XDG_RUNTIME_DIR ?? os.homedir();
-  const basename = path.basename(baseDir);
 
-  return basename === "prettierd" || basename === ".prettierd"
-    ? baseDir
+  return process.env.XDG_RUNTIME_DIR
+    ? path.join(baseDir, "prettierd")
     : path.join(baseDir, ".prettierd");
 }
 
