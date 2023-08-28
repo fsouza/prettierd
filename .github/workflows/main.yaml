@@ -24,7 +24,7 @@ jobs:
     name: build
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.6.0
 
       - uses: actions/setup-node@v3.8.1
         with:
