@@ -25,12 +25,12 @@
   "homepage": "https://github.com/fsouza/prettierd",
   "devDependencies": {
     "@types/node": "^20.5.9",
-    "@types/prettier": "^2.7.3",
+    "@types/prettier": "^3.0.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "core_d": "^5.0.1",
-    "prettier": "^2.8.8"
+    "prettier": "^3.0.3"
   },
   "files": [
     "bin",
