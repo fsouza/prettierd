@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@babel/parser@^7.22.11":
-  version "7.22.11"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.22.11.tgz#becf8ee33aad2a35ed5607f521fe6e72a615f905"
-  integrity sha512-R5zb8eJIBPJriQtbH/htEQy4k7E2dHWlD2Y2VT07JCzwYZHBxV5ZYtM0UhXSNMT74LyxuM+b1jdL7pSesXbC/g==
+"@babel/parser@^7.22.15":
+  version "7.22.15"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.22.15.tgz#d34592bfe288a32e741aa0663dbc4829fcd55160"
+  integrity sha512-RWmQ/sklUN9BvGGpCDgSubhHWfAx24XDTDObup4ffvxaYsptOg2P3KG0j+1eWKLxpkX0j0uHxmpq2Z1SP/VhxA==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
