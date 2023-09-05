@@ -1,7 +1,7 @@
 import path from "node:path";
 import type Prettier from "prettier";
 import { promisify } from "node:util";
-import { stat, readdir } from "node:fs/promises";
+import { readdir } from "node:fs/promises";
 
 type CliOptions = {
   [key: string]: boolean | number | string | undefined;
@@ -9,15 +9,6 @@ type CliOptions = {
   configPrecedence: "cli-override" | "file-override" | "prefer-file";
   editorconfig?: boolean;
 };
-
-async function isDir(path: string): Promise<boolean> {
-  try {
-    const fsStat = await stat(path);
-    return fsStat.isDirectory();
-  } catch (e) {
-    return false;
-  }
-}
 
 const toCamelcase = (str: string) =>
   str.replace(/-./g, (s) => s[1].toUpperCase());
@@ -47,49 +38,12 @@ function argsToOptions(args: string[]) {
   return options;
 }
 
-async function findParent(
-  start: string,
-  search: string
-): Promise<string | undefined> {
-  const parent = path.join(start, "..");
-  if (parent === start) {
-    return undefined;
-  }
-
-  try {
-    const candidate = path.join(parent, search);
-    if (await isDir(candidate)) {
-      return candidate;
-    }
-  } catch (e) {}
-
-  return await findParent(parent, search);
-}
-
 type EnvMap = { [name: string]: string | undefined };
-
-async function pluginSearchDirs(cwd: string, env: EnvMap): Promise<string[]> {
-  const result: string[] = [];
-
-  const localNodeModules = await findParent(cwd, "node_modules");
-  if (localNodeModules) {
-    result.push(path.dirname(localNodeModules));
-  }
-
-  if (!env.PRETTIERD_LOCAL_PRETTIER_ONLY) {
-    const parentNodeModules = await findParent(__dirname, "node_modules");
-    if (parentNodeModules) {
-      result.push(parentNodeModules);
-    }
-  }
-
-  return result;
-}
 
 async function tryToResolveConfigFromEnvironmentValue(
   prettier: typeof Prettier,
   editorconfig: boolean,
-  value: string | undefined
+  value: string | undefined,
 ): Promise<Prettier.Options | null> {
   if (value) {
     return await prettier.resolveConfig(path.dirname(value), {
@@ -105,7 +59,7 @@ async function resolveConfig(
   env: EnvMap,
   prettier: typeof Prettier,
   filepath: string,
-  { config, editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">
+  { config, editorconfig = true }: Pick<CliOptions, "config" | "editorconfig">,
 ): Promise<Prettier.Options | null> {
   if (config === false) {
     return null;
@@ -120,7 +74,7 @@ async function resolveConfig(
     prettierConfig = await tryToResolveConfigFromEnvironmentValue(
       prettier,
       editorconfig,
-      env.PRETTIERD_DEFAULT_CONFIG
+      env.PRETTIERD_DEFAULT_CONFIG,
     );
   }
 
@@ -134,7 +88,7 @@ export type ResolvedPrettier = {
 
 async function resolvePrettier(
   env: EnvMap,
-  filePath: string
+  filePath: string,
 ): Promise<ResolvedPrettier | undefined> {
   let path: string;
   try {
@@ -227,7 +181,7 @@ type InvokeArgs = {
 async function run(
   cwd: string,
   { args, clientEnv }: InvokeArgs,
-  text: string
+  text: string,
 ): Promise<string> {
   const [
     { ignorePath },
@@ -262,7 +216,6 @@ async function run(
   return prettier.format(text, {
     ...options,
     filepath: fullPath,
-    pluginSearchDirs: await pluginSearchDirs(cwd, env),
   });
 }
 
@@ -272,7 +225,7 @@ export type DebugInfo = {
 
 export async function getDebugInfo(
   cwd: string,
-  args: string[]
+  args: string[],
 ): Promise<DebugInfo> {
   const [_, fileName] = parseCLIArguments(args);
   const fullPath = resolveFile(cwd, fileName);
@@ -284,7 +237,7 @@ export async function getDebugInfo(
 
 export async function stopAll(
   runtimeDir: string,
-  prefix: string
+  prefix: string,
 ): Promise<void> {
   const files = await readdir(runtimeDir);
   const coredFiles = files.filter((file) => file.startsWith(prefix));
@@ -316,7 +269,7 @@ export function invoke(
   cwd: string,
   args: InvokeArgs | [string, InvokeArgs],
   text: string,
-  cb: (_err?: string, _resp?: string) => void
+  cb: (_err?: string, _resp?: string) => void,
 ): void {
   if (Array.isArray(args)) {
     args = { ...args[1], args: [args[0], ...args[1].args] };
