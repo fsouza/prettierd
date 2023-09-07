@@ -1,5 +1,14 @@
 # prettierd
 
+## v0.25.0
+
+### Updated dependencies
+
+- `prettier` 3 is now supported! prettier@2 can still be used, though the
+  `pluginSearchDirs` option is no longer supported.
+- `@babel/parser` upgraded to `^7.22.16`
+- `@typescript-eslint/typescript-estree` upgraded to `^6.6.0`
+
 ## v0.24.2
 
 ### Fixed
