@@ -41,7 +41,7 @@ function printDebugInfo(debugInfo: DebugInfo): void {
   if (debugInfo.resolvedPrettier) {
     console.log(
       `prettier version: ${debugInfo.resolvedPrettier.module.version}
-  Loaded from: ${debugInfo.resolvedPrettier.filePath}\n`
+  Loaded from: ${debugInfo.resolvedPrettier.filePath}\n`,
     );
   }
 }
@@ -61,7 +61,7 @@ async function verifyRuntimeDir(dir: string): Promise<void> {
     await access(dir, fs.constants.W_OK);
   } catch (e) {
     throw new Error(
-      `failed to start prettierd, make sure ${dir} is writable ${e}`
+      `failed to start prettierd, make sure ${dir} is writable ${e}`,
     );
   }
 }
@@ -119,10 +119,10 @@ async function main(args: string[]): Promise<void> {
         .filter((key) => key.startsWith("PRETTIERD_"))
         .reduce(
           (acc, key) => Object.assign(acc, { [key]: process.env[key] }),
-          {}
+          {},
         ),
     },
-    await readFile(process.stdin.fd, { encoding: "utf-8" })
+    await readFile(process.stdin.fd, { encoding: "utf-8" }),
   );
 }
 
