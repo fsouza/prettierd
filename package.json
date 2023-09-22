@@ -29,7 +29,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "core_d": "^5.0.1",
+    "core_d": "^6.0.0",
     "prettier": "^3.0.3"
   },
   "files": [
