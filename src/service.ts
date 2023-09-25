@@ -46,7 +46,7 @@ async function tryToResolveConfigFromEnvironmentValue(
   value: string | undefined,
 ): Promise<Prettier.Options | null> {
   if (value) {
-    return await prettier.resolveConfig(path.dirname(value), {
+    return prettier.resolveConfig(path.dirname(value), {
       config: value,
       editorconfig,
       useCache: false,
