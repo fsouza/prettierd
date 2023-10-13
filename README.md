@@ -85,6 +85,8 @@ package, you can set the environment variable `PRETTIERD_LOCAL_PRETTIER_ONLY`
 
 ## Editor integration
 
+### Vim / Neovim
+
 I use this directly with neovim's LSP client, via
 [efm-langserver](https://github.com/mattn/efm-langserver):
 
@@ -98,7 +100,7 @@ local prettier = {
 }
 ```
 
-Alternatively, one can use
+Alternatively, you can use
 [prettierme](https://github.com/ruyadorno/prettierme) to integrate directly
 with other editors.
 
@@ -125,6 +127,35 @@ require('formatter').setup({
   }
 })
 ```
+
+### Sublime Text
+
+#### Prettierd Format
+
+You can use [Prettierd Format](https://packagecontrol.io/packages/Prettierd%20Format) to format your files with prettierd. After installation, it enables format-on-save for any file supported by Prettier by default.
+
+#### Fmt
+
+Alternatively, if you're looking for something more advanced that supports multiple formatters, you can use [Fmt](https://packagecontrol.io/packages/Fmt) and configure prettierd for each language you wish to format:
+
+```json
+{
+  "rules": [
+    {
+      "selector": "source.ts",
+      "cmd": ["prettierd", "--stdin-filepath", "$file"],
+      "format_on_save": true
+    },
+    {
+      "selector": "source.json",
+      // ...
+    },
+    // ...
+  ]
+}
+```
+
+### Other editors
 
 I don't know much about other editors, but feel free to send a pull requests on
 instructions.
