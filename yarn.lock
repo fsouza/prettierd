@@ -80,10 +80,10 @@ braces@^3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-core_d@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/core_d/-/core_d-6.0.0.tgz#aa688ed03d93114ca0e13658f3dae765847d54cd"
-  integrity sha512-r0d8vUgwRyf6Ln45YrJUYXBTrEdrj5XrljmdY5DpLuN+xQ2I5SKZ3iSTnnxEfSxnrhUmyiPIRr6WfRYqVT2huA==
+core_d@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/core_d/-/core_d-6.1.0.tgz#a288dc94eb85261cf444357c92fc5fafd7eab96d"
+  integrity sha512-vYgenhJ8CYCj+7LPbPdyFo2u0Doavfbi/vhFpR/BsW9/iUAhuKd+sw2l4CHXhaXIo4/058p2nlsAtbL7iswm5A==
   dependencies:
     supports-color "^8.1.0"
 
