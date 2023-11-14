@@ -210,8 +210,8 @@ async function run(
     configPrecedence === "prefer-file" && fileOptions !== null
       ? fileOptions
       : configPrecedence === "file-override"
-      ? { ...cliOptions, ...fileOptions }
-      : { ...fileOptions, ...cliOptions };
+        ? { ...cliOptions, ...fileOptions }
+        : { ...fileOptions, ...cliOptions };
 
   return prettier.format(text, {
     ...options,
