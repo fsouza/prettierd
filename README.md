@@ -155,6 +155,29 @@ Alternatively, if you're looking for something more advanced that supports multi
 }
 ```
 
+### Zed
+
+To use Prettierd with Zed, you need to configure the `language_overrides` adding a `format_on_save` command for each of the languages you wish to be handling. Example configuration:
+```json
+{
+  "language_overrides": {
+    "TypeScript": {
+      "format_on_save": {
+        "external": {
+          "command": "/opt/homebrew/bin/prettierd",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+Saveyour configuration file, and provided you've installed and set the correct path to `prettierd` program, Zed will start formatting your files on save action.
+
 ### Other editors
 
 I don't know much about other editors, but feel free to send a pull requests on
