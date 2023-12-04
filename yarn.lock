@@ -28,10 +28,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@types/node@^20.10.0":
-  version "20.10.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.0.tgz#16ddf9c0a72b832ec4fcce35b8249cf149214617"
-  integrity sha512-D0WfRmU9TQ8I9PFx9Yc+EBHw+vSpIub4IDvQivcp26PtPrdMGAq5SDcpXEo/epqa/DXotVpekHiLNTg3iaKXBQ==
+"@types/node@^20.10.3":
+  version "20.10.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.3.tgz#4900adcc7fc189d5af5bb41da8f543cea6962030"
+  integrity sha512-XJavIpZqiXID5Yxnxv3RUDKTN5b81ddNC3ecsA0SoFXz/QU8OGBwZGMomiq0zw+uuqbL/krztv/DINAQ/EV4gg==
   dependencies:
     undici-types "~5.26.4"
 
