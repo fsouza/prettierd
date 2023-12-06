@@ -159,7 +159,7 @@ Alternatively, if you're looking for something more advanced that supports multi
 
 To use Prettierd with Zed, you need to configure the `language_overrides` adding a `format_on_save` command for each of the languages you wish to be handling.
 
-> ![NOTE]
+> [!NOTE]
 > Configuration below assumes you have installed `prettierd` and gives an example of its path from Homebrew installation. You can check path on your system by running `which prettierd`.
 
 Example configuration:
