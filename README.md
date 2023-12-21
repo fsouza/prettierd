@@ -171,10 +171,7 @@ Example configuration:
       "format_on_save": {
         "external": {
           "command": "/opt/homebrew/bin/prettierd",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ]
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
         }
       }
     }
