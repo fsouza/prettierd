@@ -40,6 +40,6 @@
   ],
   "optionalDependencies": {
     "@babel/parser": "^7.23.6",
-    "@typescript-eslint/typescript-estree": "^6.15.0"
+    "@typescript-eslint/typescript-estree": "^6.16.0"
   }
 }
