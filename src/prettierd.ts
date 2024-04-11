@@ -2,14 +2,13 @@ import { access, mkdir } from "node:fs/promises";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { promisify } from "node:util";
 
 // @ts-ignore
 import { version } from "../package.json";
 import { displayHelp } from "./args";
 import { DebugInfo, getDebugInfo, stopAll } from "./service";
+import getStdin from "get-stdin";
 
-const readFile = promisify(fs.readFile);
 const coredCommands = ["restart", "start", "status"];
 
 type Action =
@@ -122,7 +121,7 @@ async function main(args: string[]): Promise<void> {
           {},
         ),
     },
-    await readFile(process.stdin.fd, { encoding: "utf-8" }),
+    await getStdin(),
   );
 }
 
