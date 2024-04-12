@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.25.3
+
+### Fixed
+
+- Fix bugs with stdin encoding on Windows that would cause spurious errors or invalid characters to get inserted
+
+### Updated dependencies
+
+- `prettier` upgraded to `^3.2.5`
+- `@babel/parser` upgraded to `^7.24.4`
+- `@typescript-eslint/typescript-estree` upgraded to `^7.6.0`
+
 ## v0.25.2
 
 ### Updated dependencies
