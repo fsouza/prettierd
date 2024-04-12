@@ -7,7 +7,7 @@ import path from "node:path";
 import { version } from "../package.json";
 import { displayHelp } from "./args";
 import { DebugInfo, getDebugInfo, stopAll } from "./service";
-import getStdin from "get-stdin";
+import getStdin from "./get-stdin";
 
 const coredCommands = ["restart", "start", "status"];
 
@@ -106,9 +106,6 @@ async function main(args: string[]): Promise<void> {
   if (cmdOrFilename === "stop-local") {
     core_d.stop();
     return;
-  }
-
-  if (cmdOrFilename === "stop") {
   }
 
   core_d.invoke(
