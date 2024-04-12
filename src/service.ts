@@ -103,7 +103,7 @@ async function resolvePrettier(
   return import(path).then((v) => {
     if (v !== undefined) {
       return {
-        module: v,
+        module: v.default,
         filePath: path,
       };
     }
