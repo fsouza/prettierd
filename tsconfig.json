@@ -1,8 +1,24 @@
 {
   "compilerOptions": {
     "incremental": true,
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": [],
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "rootDir": "src"
-  },
-  "extends": "@tsconfig/node18/tsconfig.json"
+  }
 }
