@@ -153,8 +153,26 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
           parsedArguments.ignorePath = nextArg.value;
           break;
         }
+        case "--stdin-filepath": {
+          const nextArg = argsIterator.next();
+          if (nextArg.done) {
+            throw new Error("--stdin-filepath option expects a file path");
+          }
+
+          fileName = nextArg.value;
+          break;
+        }
         default: {
-          optionArgs.push(arg);
+          if (arg.includes("=")) {
+            optionArgs.push(arg);
+          } else {
+            const nextArg = argsIterator.next();
+            if (nextArg.done) {
+              throw new Error(`--${arg} expects a value`);
+            }
+
+            optionArgs.push(`${arg}=${nextArg.value}`);
+          }
         }
       }
     } else {
