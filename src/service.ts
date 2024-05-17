@@ -136,8 +136,8 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
 
   const optionArgs: string[] = [];
 
-  const argsIterator = args[Symbol.iterator]();
-  for (const arg of argsIterator) {
+  for (let i = 0; i < args.length; i++) {
+    let arg = args[i];
     if (arg.startsWith("-")) {
       switch (arg) {
         case "--no-color":
@@ -145,47 +145,48 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
           break;
 
         case "--ignore-path": {
-          const nextArg = argsIterator.next();
-          if (nextArg.done) {
+          const nextArg = args[i + 1];
+          if (nextArg === undefined) {
             throw new Error("--ignore-path option expects a file path");
           }
 
-          parsedArguments.ignorePath = nextArg.value;
+          parsedArguments.ignorePath = nextArg;
+          i++;
           break;
         }
         case "--stdin-filepath": {
-          const nextArg = argsIterator.next();
-          if (nextArg.done) {
+          const nextArg = args[i + 1];
+          if (nextArg === undefined) {
             throw new Error("--stdin-filepath option expects a file path");
           }
 
-          fileName = nextArg.value;
+          fileName = nextArg;
+          i++;
           break;
         }
         default: {
           if (arg.includes("=")) {
             optionArgs.push(arg);
           } else {
-            const nextArg = argsIterator.next();
-            if (nextArg.done) {
-              throw new Error(`--${arg} expects a value`);
+            const nextArg = args[i + 1];
+            if (nextArg !== undefined && !nextArg.startsWith("-")) {
+              optionArgs.push(`${arg}=${nextArg}`);
+              i++;
+            } else {
+              optionArgs.push(arg);
             }
-
-            optionArgs.push(`${arg}=${nextArg.value}`);
           }
         }
       }
     } else {
-      if (fileName) {
-        throw new Error("Only a single file path is supported");
-      }
-      // NOTE: positional arguments are assumed to be file paths
-      fileName = arg;
+      throw new Error("Positional arguments are not supported");
     }
   }
 
   if (!fileName) {
-    throw new Error("File name must be provided as an argument");
+    throw new Error(
+      "File name must be provided as an argument to --stdin-filepath",
+    );
   }
 
   return [parsedArguments, fileName, argsToOptions(optionArgs)];
