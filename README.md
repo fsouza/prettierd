@@ -179,7 +179,7 @@ Example configuration:
 }
 ```
 
-Saveyour configuration file, and provided you've installed and set the correct path to `prettierd` program, Zed will start formatting your files on save action.
+Save your configuration file, and provided you've installed and set the correct path to `prettierd` program, Zed will start formatting your files on save action.
 
 ### Other editors
 
