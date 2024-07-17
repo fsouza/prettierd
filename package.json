@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "core_d": "^6.1.0",
-    "prettier": "^3.3.2"
+    "prettier": "^3.3.3"
   },
   "files": [
     "bin",
