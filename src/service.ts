@@ -3,6 +3,8 @@ import type Prettier from "prettier";
 import { promisify } from "node:util";
 import { readdir } from "node:fs/promises";
 
+type Task = "check" | "format";
+
 type CliOptions = {
   [key: string]: boolean | number | string | undefined;
   config?: false | string;
@@ -130,9 +132,12 @@ const defaultCLIArguments: CLIArguments = {
   ignorePath: ".prettierignore",
 };
 
-function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
+function parseCLIArguments(
+  args: string[],
+): [CLIArguments, string, Task, CliOptions] {
   const parsedArguments: CLIArguments = { ...defaultCLIArguments };
   let fileName: string | null = null;
+  let task: Task = "format";
 
   const optionArgs: string[] = [];
 
@@ -153,6 +158,14 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
           parsedArguments.ignorePath = nextArg.value;
           break;
         }
+        case "--check": {
+          task = "check";
+          break;
+        }
+        case "--format": {
+          task = "format";
+          break;
+        }
         default: {
           optionArgs.push(arg);
         }
@@ -170,7 +183,7 @@ function parseCLIArguments(args: string[]): [CLIArguments, string, CliOptions] {
     throw new Error("File name must be provided as an argument");
   }
 
-  return [parsedArguments, fileName, argsToOptions(optionArgs)];
+  return [parsedArguments, fileName, task, argsToOptions(optionArgs)];
 }
 
 type InvokeArgs = {
@@ -186,6 +199,7 @@ async function run(
   const [
     { ignorePath },
     fileName,
+    task,
     { config, configPrecedence, editorconfig, ...cliOptions },
   ] = parseCLIArguments(args);
   const env = { ...process.env, ...clientEnv };
@@ -213,10 +227,20 @@ async function run(
         ? { ...cliOptions, ...fileOptions }
         : { ...fileOptions, ...cliOptions };
 
-  return prettier.format(text, {
-    ...options,
-    filepath: fullPath,
-  });
+  switch (task) {
+    case "format":
+      return await prettier.format(text, {
+        ...options,
+        filepath: fullPath,
+      });
+    case "check":
+      const valid = await prettier.check(text, {
+        ...options,
+        filepath: fullPath,
+      });
+      if (!valid) throw `Invalid formatting: ${fullPath}`;
+      return "";
+  }
 }
 
 export type DebugInfo = {
