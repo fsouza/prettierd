@@ -8,7 +8,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@v4.2.2
 
       - uses: actions/setup-node@v4.1.0
         with:
@@ -28,7 +28,7 @@ jobs:
     needs:
       - release
     steps:
-      - uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@v4.2.2
         with:
           ref: main
           repository: fsouza/homebrew-prettierd
