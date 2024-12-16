@@ -85,6 +85,17 @@ package, you can set the environment variable `PRETTIERD_LOCAL_PRETTIER_ONLY`
 
 ## Editor integration
 
+### Helix
+
+Add the following entry into your `~/.config/helix/languages.toml`:
+
+```toml
+[[language]]
+auto-format = true
+name = "typescript"
+formatter = { args = [".ts"], command = "prettierd" }
+```
+
 ### Vim / Neovim
 
 I use this directly with neovim's LSP client, via
