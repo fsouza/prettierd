@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.26.0
+
+### New features
+
+- Add the ability to lint code with `prettierd --check`
+
+### Updated dependencies
+
+- `prettier` upgraded to `3.4.2`
+- `@babel/parser` upgraded to `^7.26.3`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.19.0`
+
 ## v0.25.4
 
 ### Updated dependencies
