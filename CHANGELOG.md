@@ -1,5 +1,16 @@
 # prettierd
 
+## v0.26.1
+
+### Fixed
+
+- Use `TMPDIR` if `XDG_RUNTIME_DIR` is not set
+
+### Updated dependencies
+
+- `@babel/parser` upgraded to `^7.26.5`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.19.1`
+
 ## v0.26.0
 
 ### New features
