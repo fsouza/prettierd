@@ -31,7 +31,7 @@ $ npm install -g @fsouza/prettierd
 Alternatively, users may also use homebrew:
 
 ```
-$ brew install fsouza/prettierd/prettierd
+$ brew install prettierd
 ```
 
 ## Using in the command line with node.js
