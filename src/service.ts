@@ -141,8 +141,8 @@ function parseCLIArguments(
 
   const optionArgs: string[] = [];
 
-  const argsIterator = args[Symbol.iterator]();
-  for (const arg of argsIterator) {
+  for (let i = 0; i < args.length; i++) {
+    let arg = args[i];
     if (arg.startsWith("-")) {
       switch (arg) {
         case "--no-color":
@@ -150,12 +150,23 @@ function parseCLIArguments(
           break;
 
         case "--ignore-path": {
-          const nextArg = argsIterator.next();
-          if (nextArg.done) {
+          const nextArg = args[i + 1];
+          if (nextArg === undefined) {
             throw new Error("--ignore-path option expects a file path");
           }
 
-          parsedArguments.ignorePath = nextArg.value;
+          parsedArguments.ignorePath = nextArg;
+          i++;
+          break;
+        }
+        case "--stdin-filepath": {
+          const nextArg = args[i + 1];
+          if (nextArg === undefined) {
+            throw new Error("--stdin-filepath option expects a file path");
+          }
+
+          fileName = nextArg;
+          i++;
           break;
         }
         case "--check": {
@@ -167,20 +178,28 @@ function parseCLIArguments(
           break;
         }
         default: {
-          optionArgs.push(arg);
+          if (arg.includes("=")) {
+            optionArgs.push(arg);
+          } else {
+            const nextArg = args[i + 1];
+            if (nextArg !== undefined && !nextArg.startsWith("-")) {
+              optionArgs.push(`${arg}=${nextArg}`);
+              i++;
+            } else {
+              optionArgs.push(arg);
+            }
+          }
         }
       }
     } else {
-      if (fileName) {
-        throw new Error("Only a single file path is supported");
-      }
-      // NOTE: positional arguments are assumed to be file paths
-      fileName = arg;
+      throw new Error("Positional arguments are not supported");
     }
   }
 
   if (!fileName) {
-    throw new Error("File name must be provided as an argument");
+    throw new Error(
+      "File name must be provided as an argument to --stdin-filepath",
+    );
   }
 
   return [parsedArguments, fileName, task, argsToOptions(optionArgs)];
