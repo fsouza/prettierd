@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/fsouza/prettierd",
   "devDependencies": {
-    "@types/node": "^22.15.17",
+    "@types/node": "^22.15.21",
     "@types/prettier": "^3.0.0",
     "typescript": "^5.8.3"
   },
