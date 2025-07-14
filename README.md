@@ -59,10 +59,10 @@ prettier configuration. For example, to use the Ruby plugin, install
 [`@prettier/plugin-ruby`](https://www.npmjs.com/package/@prettier/plugin-ruby)
 and add it to your configuration:
 
-```json
+```jsonc
 {
   // ... other settings
-  "plugins": ["@prettier/plugin-ruby"]
+  "plugins": ["@prettier/plugin-ruby"],
 }
 ```
 
@@ -138,20 +138,20 @@ You can use [Prettierd Format](https://packagecontrol.io/packages/Prettierd%20Fo
 
 Alternatively, if you're looking for something more advanced that supports multiple formatters, you can use [Fmt](https://packagecontrol.io/packages/Fmt) and configure prettierd for each language scope you wish to format:
 
-```json
+```jsonc
 {
   "rules": [
     {
       "selector": "source.ts",
       "cmd": ["prettierd", "--stdin-filepath", "$file"],
-      "format_on_save": true
+      "format_on_save": true,
     },
     {
-      "selector": "source.json"
+      "selector": "source.json",
       // ...
-    }
+    },
     // ...
-  ]
+  ],
 }
 ```
 
