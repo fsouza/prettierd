@@ -49,5 +49,5 @@ async function getStdinBuffer(): Promise<Buffer> {
 
 export default async function getStdin(): Promise<string> {
   const buffer = await getStdinBuffer();
-  return buffer.toString();
+  return buffer.toString("utf8");
 }
