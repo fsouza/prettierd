@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/fsouza/prettierd",
   "devDependencies": {
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.3.0",
     "@types/prettier": "^3.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "core_d": "^6.1.1",
@@ -40,7 +40,7 @@
   ],
   "optionalDependencies": {
     "@babel/parser": "^7.28.0",
-    "@typescript-eslint/typescript-estree": "^8.37.0"
+    "@typescript-eslint/typescript-estree": "^8.39.1"
   },
   "packageManager": "yarn@1.22.22+sha256.c17d3797fb9a9115bf375e31bfd30058cac6bc9c3b8807a3d8cb2094794b51ca"
 }
