@@ -1,5 +1,18 @@
 # prettierd
 
+## v0.26.2
+
+### Fixed
+
+- Fix UTF-8 support
+
+### Updated dependencies
+
+- `core_d` upgraded to `6.1.1`
+- `prettier` upgraded to 3.6.2
+- `@babel/parser` upgraded to `7.28.3`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.39.1`
+
 ## v0.26.1
 
 ### Fixed
