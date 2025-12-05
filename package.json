@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "core_d": "^6.1.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.7.3"
   },
   "files": [
     "bin",
