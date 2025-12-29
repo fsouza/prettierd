@@ -34,46 +34,46 @@
   dependencies:
     undici-types "~7.16.0"
 
-"@typescript-eslint/project-service@8.48.0":
-  version "8.48.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/project-service/-/project-service-8.48.0.tgz#c21f6f897fbc4e61c7b1e20906ea1d59594ccc2d"
-  integrity sha512-Ne4CTZyRh1BecBf84siv42wv5vQvVmgtk8AuiEffKTUo3DrBaGYZueJSxxBZ8fjk/N3DrgChH4TOdIOwOwiqqw==
+"@typescript-eslint/project-service@8.50.1":
+  version "8.50.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/project-service/-/project-service-8.50.1.tgz#3176e55ac2907638f4b8d43da486c864934adc8d"
+  integrity sha512-E1ur1MCVf+YiP89+o4Les/oBAVzmSbeRB0MQLfSlYtbWU17HPxZ6Bhs5iYmKZRALvEuBoXIZMOIRRc/P++Ortg==
   dependencies:
-    "@typescript-eslint/tsconfig-utils" "^8.48.0"
-    "@typescript-eslint/types" "^8.48.0"
+    "@typescript-eslint/tsconfig-utils" "^8.50.1"
+    "@typescript-eslint/types" "^8.50.1"
     debug "^4.3.4"
 
-"@typescript-eslint/tsconfig-utils@8.48.0", "@typescript-eslint/tsconfig-utils@^8.48.0":
-  version "8.48.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/tsconfig-utils/-/tsconfig-utils-8.48.0.tgz#05cf091cd9f24a8e047783ff979136df6cf1be04"
-  integrity sha512-WNebjBdFdyu10sR1M4OXTt2OkMd5KWIL+LLfeH9KhgP+jzfDV/LI3eXzwJ1s9+Yc0Kzo2fQCdY/OpdusCMmh6w==
+"@typescript-eslint/tsconfig-utils@8.50.1", "@typescript-eslint/tsconfig-utils@^8.50.1":
+  version "8.50.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/tsconfig-utils/-/tsconfig-utils-8.50.1.tgz#ee4894bec14ef13db305d0323b14b109d996f116"
+  integrity sha512-ooHmotT/lCWLXi55G4mvaUF60aJa012QzvLK0Y+Mp4WdSt17QhMhWOaBWeGTFVkb2gDgBe19Cxy1elPXylslDw==
 
-"@typescript-eslint/types@8.48.0", "@typescript-eslint/types@^8.48.0":
-  version "8.48.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-8.48.0.tgz#f0dc5cf27217346e9b0d90556911e01d90d0f2a5"
-  integrity sha512-cQMcGQQH7kwKoVswD1xdOytxQR60MWKM1di26xSUtxehaDs/32Zpqsu5WJlXTtTTqyAVK8R7hvsUnIXRS+bjvA==
+"@typescript-eslint/types@8.50.1", "@typescript-eslint/types@^8.50.1":
+  version "8.50.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-8.50.1.tgz#43d19e99613788e0715f799a29f139981bcd8385"
+  integrity sha512-v5lFIS2feTkNyMhd7AucE/9j/4V9v5iIbpVRncjk/K0sQ6Sb+Np9fgYS/63n6nwqahHQvbmujeBL7mp07Q9mlA==
 
-"@typescript-eslint/typescript-estree@^8.48.0":
-  version "8.48.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-8.48.0.tgz#38b340524ce34ce0e46ca541a86cf6cad8872e5b"
-  integrity sha512-ljHab1CSO4rGrQIAyizUS6UGHHCiAYhbfcIZ1zVJr5nMryxlXMVWS3duFPSKvSUbFPwkXMFk1k0EMIjub4sRRQ==
+"@typescript-eslint/typescript-estree@^8.50.1":
+  version "8.50.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-8.50.1.tgz#ce273e584694fa5bd34514fcfbea51fe1d79e271"
+  integrity sha512-woHPdW+0gj53aM+cxchymJCrh0cyS7BTIdcDxWUNsclr9VDkOSbqC13juHzxOmQ22dDkMZEpZB+3X1WpUvzgVQ==
   dependencies:
-    "@typescript-eslint/project-service" "8.48.0"
-    "@typescript-eslint/tsconfig-utils" "8.48.0"
-    "@typescript-eslint/types" "8.48.0"
-    "@typescript-eslint/visitor-keys" "8.48.0"
+    "@typescript-eslint/project-service" "8.50.1"
+    "@typescript-eslint/tsconfig-utils" "8.50.1"
+    "@typescript-eslint/types" "8.50.1"
+    "@typescript-eslint/visitor-keys" "8.50.1"
     debug "^4.3.4"
     minimatch "^9.0.4"
     semver "^7.6.0"
     tinyglobby "^0.2.15"
     ts-api-utils "^2.1.0"
 
-"@typescript-eslint/visitor-keys@8.48.0":
-  version "8.48.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-8.48.0.tgz#6b07ef5661a85d08b01fbe4b8310a7311a6471af"
-  integrity sha512-T0XJMaRPOH3+LBbAfzR2jalckP1MSG/L9eUtY0DEzUyVaXJ/t6zN0nR7co5kz0Jko/nkSYCBRkz1djvjajVTTg==
+"@typescript-eslint/visitor-keys@8.50.1":
+  version "8.50.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-8.50.1.tgz#13b9d43b7567862faca69527580b9adda1a5c9fd"
+  integrity sha512-IrDKrw7pCRUR94zeuCSUWQ+w8JEf5ZX5jl/e6AHGSLi1/zIr0lgutfn/7JpfCey+urpgQEdrZVYzCaVVKiTwhQ==
   dependencies:
-    "@typescript-eslint/types" "8.48.0"
+    "@typescript-eslint/types" "8.50.1"
     eslint-visitor-keys "^4.2.1"
 
 balanced-match@^1.0.0:
