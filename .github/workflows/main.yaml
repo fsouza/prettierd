@@ -36,4 +36,7 @@ jobs:
 
       - run: yarn build
 
+      - run: |
+          cat tests/fixtures/FILENAME.ts | yarn run run -- FILENAME.ts
+
       - run: yarn start
