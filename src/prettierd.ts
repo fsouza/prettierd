@@ -45,6 +45,17 @@ function printDebugInfo(debugInfo: DebugInfo): void {
   }
 }
 
+function setupNodeOptionsForTypeScript(): void {
+  const [major, minor] = process.versions.node.split(".").map(Number);
+  if (major > 22 || (major === 22 && minor >= 6)) {
+    const flag = "--experimental-strip-types";
+    const current = process.env.NODE_OPTIONS || "";
+    if (!current.includes(flag)) {
+      process.env.NODE_OPTIONS = current ? `${current} ${flag}` : flag;
+    }
+  }
+}
+
 function getRuntimeDir(): string {
   const baseDir =
     process.env.XDG_RUNTIME_DIR ?? process.env.TMPDIR ?? os.homedir();
@@ -96,6 +107,7 @@ async function main(args: string[]): Promise<void> {
     await stopAll(runtimeDir, `.${title}`);
     return;
   }
+  setupNodeOptionsForTypeScript();
 
   const core_d = require("core_d");
 
