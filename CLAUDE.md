@@ -12,8 +12,8 @@ overhead. Published as `@fsouza/prettierd` on npm.
 ## Commands
 
 - `yarn build` — compile TypeScript (`tsc -b`, outputs to `dist/`)
-- `yarn prettier:check` — verify code formatting
-- `yarn prettier:fix` — auto-format all code
+- `yarn prettier:check` — verify code formatting (includes all files: TypeScript, markdown, JSON, YAML)
+- `yarn prettier:fix` — auto-format all files (run this after editing any file, including markdown)
 - `yarn start` — start the prettierd daemon
 
 There is no test suite. CI runs `prettier:check`, `build`, and then starts the daemon
