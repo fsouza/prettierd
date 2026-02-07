@@ -17,9 +17,9 @@ jobs:
           - macos
           - windows
         node-version:
-          - "18.x"
           - "20.x"
           - "22.x"
+          - "24.x"
 
     name: build
     runs-on: ${{ matrix.os }}-latest
