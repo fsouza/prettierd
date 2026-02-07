@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.27.0
+
+### New features
+
+- Support TypeScript config files (`prettier.config.ts`) on Node.js >= 22.6
+
+### Updated dependencies
+
+- `prettier` upgraded to `^3.8.1`
+- `@babel/parser` upgraded to `^7.29.0`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.53.1`
+
 ## v0.26.2
 
 ### Fixed
