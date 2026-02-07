@@ -31,12 +31,13 @@ src/prettierd.ts       CLI orchestration: parses args, sets up env vars, manages
     └─→ core_d              External daemon lifecycle manager (start/stop/restart/status)
 ```
 
-**prettierd.ts** — Processes CLI arguments into actions (INVOKE_CORE_D, STOP,
+**prettierd.ts** — Processes CLI arguments into actions (INVOKE*CORE_D, STOP,
 PRINT_VERSION, etc.), determines the runtime directory (XDG_RUNTIME_DIR or TMPDIR or
-HOME), and forwards `PRETTIERD_*` environment variables from client to the daemon
+HOME), and forwards `PRETTIERD*\*` environment variables from client to the daemon
 service.
 
 **service.ts** — The service module loaded by core_d. Handles:
+
 - Prettier resolution: tries local project prettier first, falls back to bundled.
   `PRETTIERD_LOCAL_PRETTIER_ONLY` env var disables the fallback.
 - Config resolution chain: explicit config path → `PRETTIERD_DEFAULT_CONFIG` env var →
