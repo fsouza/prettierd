@@ -1,5 +1,13 @@
 # prettierd
 
+## v0.28.0
+
+### Updated dependencies
+
+- `prettier` upgraded to `^3.8.3`
+- `@babel/parser` upgraded to `^7.29.7`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.60.0`
+
 ## v0.27.0
 
 ### New features
