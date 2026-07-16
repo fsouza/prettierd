@@ -2,30 +2,30 @@
 # yarn lockfile v1
 
 
-"@babel/helper-string-parser@^7.29.7":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-7.29.7.tgz#7f0871d99824d23137d60f86fcf6130fd5a1b51f"
-  integrity sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==
+"@babel/helper-string-parser@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-8.0.0.tgz#4d47d9ad35d0f5bd7d202b348bf558328a347977"
+  integrity sha512-6mJgmFFFIIO82vvoLt9XtRC7/TkzXfts1t/SpRX4IHSzMgqoPYCWesVu1udUPUWioAE/2fcG6WuI8zrkE1gwrg==
 
-"@babel/helper-validator-identifier@^7.29.7":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.29.7.tgz#bd87084ced0c796ec46bda492de6e83d29e89fc2"
-  integrity sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg==
+"@babel/helper-validator-identifier@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-8.0.4.tgz#60e427a9be7a101af52f14588def2dad8a9f9881"
+  integrity sha512-4wFaiLd0bVo4cIoTXI3zKI038NIWE/cr3jvBjejOVYVxV/m8Ltav1USiGzG1fmS5J2RhgEOgXNNK46cRPnRsrg==
 
-"@babel/parser@^7.29.7":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.29.7.tgz#837b87387cbf5ec5530cb634b3c622f68edb9334"
-  integrity sha512-hnORnjP/1P/zFEndoeX+n+t1RwWRJiJpM/jO7FW32Kn9r5+sJB2JWOdYo4L6k78j15eCwY3Gm/7364B1EMwtNg==
+"@babel/parser@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-8.0.4.tgz#244e21ca23ab54c6f5373af2122cb3a618f9dd39"
+  integrity sha512-srpptsAkEbbNIC/q8nT7o+m6CQe8CJUTV/t7MYc9NnWlgYVtHOb7JH6SorxMhN0kuRJjVqXbKClG6xSbPtzz+g==
   dependencies:
-    "@babel/types" "^7.29.7"
+    "@babel/types" "^8.0.4"
 
-"@babel/types@^7.29.7":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.29.7.tgz#8005e31d82712ee7adaef6e23c63b71a62770a92"
-  integrity sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==
+"@babel/types@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-8.0.4.tgz#8c208701320c9f0323b5b6a233d093e52c1e3b41"
+  integrity sha512-eY+Yn3dCqTGmyiq2QRU66lA5FL8lqqqvecHt0fF3uHONIa7ToYsaCiWV8lOKqAs0Rb2SjixiKFROngnulPtt2g==
   dependencies:
-    "@babel/helper-string-parser" "^7.29.7"
-    "@babel/helper-validator-identifier" "^7.29.7"
+    "@babel/helper-string-parser" "^8.0.0"
+    "@babel/helper-validator-identifier" "^8.0.4"
 
 "@types/node@^26.1.1":
   version "26.1.1"
