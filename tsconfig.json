@@ -21,5 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "rootDir": "src"
-  }
+  },
+  "exclude": ["tests/fixtures/**/*"]
 }
