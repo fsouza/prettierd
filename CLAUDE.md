@@ -11,10 +11,12 @@ overhead. Published as `@fsouza/prettierd` on npm.
 
 ## Commands
 
-- `yarn build` — compile TypeScript (`tsc -b`, outputs to `dist/`)
-- `yarn prettier:check` — verify code formatting (includes all files: TypeScript, markdown, JSON, YAML)
-- `yarn prettier:fix` — auto-format all files (run this after editing any file, including markdown)
-- `yarn start` — start the prettierd daemon
+- `npm run build` — compile TypeScript (`tsc -b`, outputs to `dist/`)
+- `npm run prettier:check` — verify code formatting (includes all files: TypeScript, markdown, JSON, YAML)
+- `npm run prettier:fix` — auto-format all files (run this after editing any file, including markdown)
+- `npm start` — start the prettierd daemon
+
+Dependencies are managed with npm (`package-lock.json`); CI installs with `npm ci`.
 
 There is no test suite. CI runs `prettier:check`, `build`, and then starts the daemon
 to verify it works.

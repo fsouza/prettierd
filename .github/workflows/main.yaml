@@ -29,11 +29,12 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
-      - run: yarn install --frozen-lockfile
+      - run: npm ci
 
-      - run: yarn prettier:check
+      - run: npm run prettier:check
 
-      - run: yarn build
+      - run: npm run build
 
-      - run: yarn start
+      - run: npm start
