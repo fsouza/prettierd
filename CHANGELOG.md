@@ -1,5 +1,17 @@
 # prettierd
 
+## v0.29.0
+
+### Changed
+
+- Minimum supported Node.js version is now 22 (dropped support for Node.js 20)
+
+### Updated dependencies
+
+- `prettier` upgraded to `^3.9.5`
+- `@babel/parser` upgraded to `^8.0.4`
+- `@typescript-eslint/typescript-estree` upgraded to `^8.64.0`
+
 ## v0.28.0
 
 ### Updated dependencies
