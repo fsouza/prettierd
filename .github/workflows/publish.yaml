@@ -21,5 +21,11 @@ jobs:
           scope: "@fsouza"
 
       - run: yarn install --frozen-lockfile
+        env:
+          # setup-node writes `//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}`
+          # into .npmrc. yarn 1.x eagerly expands that and errors if the var is
+          # unset. We publish via OIDC (no token), so define it empty here — no
+          # auth is needed to install public deps.
+          NODE_AUTH_TOKEN: ""
 
       - run: npm publish --access public
